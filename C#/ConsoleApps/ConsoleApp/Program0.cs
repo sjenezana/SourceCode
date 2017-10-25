@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
-    class Program
+    class Program0
     {
         //test: force push after merge PR
-        static void Main(string[] args)
+        static void Main0(string[] args)
         {
             Console.ReadLine();
             TestValueTypeandReferenceType test = new TestValueTypeandReferenceType();

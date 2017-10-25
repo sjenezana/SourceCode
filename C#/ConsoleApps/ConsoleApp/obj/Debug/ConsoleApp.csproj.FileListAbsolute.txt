@@ -7,3 +7,4 @@ D:\Git\SourceCode\C#\ConsoleApps\ConsoleApp\obj\Debug\ConsoleApp.pdb
 D:\Git\SourceCode\C#\ConsoleApps\Output\Debug\ConsoleApp.exe.config
 D:\Git\SourceCode\C#\ConsoleApps\Output\Debug\ConsoleApp.exe
 D:\Git\SourceCode\C#\ConsoleApps\Output\Debug\ConsoleApp.pdb
+D:\Git\SourceCode\C#\ConsoleApps\ConsoleApp\obj\Debug\ConsoleApp.csproj.CoreCompileInputs.cache
