@@ -92,8 +92,7 @@ namespace ConsoleApp
             string str = string.Empty;
             if (digits == null)
                 return str; 
-
-           
+             
             return str;
 
         }

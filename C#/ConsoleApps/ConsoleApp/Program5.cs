@@ -26,7 +26,23 @@ namespace ConsoleApp
             PointerMethod();
 
             LinqMethod();
+
+            GCMethod();
+
             Console.ReadLine();
+        }
+
+        private static void GCMethod()
+        {
+            Console.WriteLine("GC GetTotalMemory" + GC.GetTotalMemory(false) + ";");
+            Console.WriteLine("GC MaxGeneration" + GC.MaxGeneration + ";");
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.Play();
+            mediaPlayer.GetAllTracks();
+
         }
 
         private static void LinqMethod()
