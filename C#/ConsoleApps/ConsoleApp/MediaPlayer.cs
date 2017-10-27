@@ -21,6 +21,8 @@ namespace ConsoleApp
         {
             return allSongs.Value;
         }
+
+        Array
     }
 
     internal class AllTracks
