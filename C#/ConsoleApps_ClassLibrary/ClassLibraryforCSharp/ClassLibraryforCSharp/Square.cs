@@ -1,10 +1,12 @@
-﻿using System;
+﻿using NLog;
+using System;
 
 namespace ClassLibraryforCSharp
 {
     [Serializable]
     internal class Square : ITest
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public int Length { get; set; }
 
         //[NonSerialized,Obsolete]
@@ -25,11 +27,16 @@ namespace ClassLibraryforCSharp
 
                 Console.WriteLine();
             }
+            try { throw new Exception("new exception"); }
+            catch (Exception e)
+            {
+                logger.Error(e, "message");
+            }
         }
 
         public void ShowMessage(string message = "default message")
         {
-            Console.WriteLine("hello, this is message for show : {0} .",message);
+            Console.WriteLine("hello, this is message for show : {0} .", message);
         }
     }
 

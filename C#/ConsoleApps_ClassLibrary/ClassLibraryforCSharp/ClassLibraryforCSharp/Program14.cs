@@ -3,15 +3,14 @@ using MyCircle = MyNameSpace.Circle;
 using Car;
 using System.Reflection;
 using System.Linq;
-
-[assembly: CLSCompliant(true)]
+ 
 namespace ClassLibraryforCSharp
 {
-    class Program
+    class Program14
     {
         string str = string.Empty;
 
-        static void Main(string[] args)
+        static void Main14(string[] args)
         {
             Console.WriteLine("Hello world!");
 
@@ -42,13 +41,11 @@ namespace ClassLibraryforCSharp
             Type type = typeof(Vehical);
             foreach (VehicalDescriptionAttribute v in type.GetCustomAttributes(false))
                 Console.WriteLine("attribute : {0}",v.Description);
-            //late binding 
-
+            
+            //late binding  
             Assembly assembly = Assembly.Load("ClassLibraryforCSharp");
             Type vehicalType = assembly.GetType("ClassLibraryforCSharp.VehicalDescriptionAttribute");
-            object[] objs;
-
-
+            object[] objs; 
             foreach (Type t in assembly.GetTypes())
             {
                 objs = t.GetCustomAttributes(vehicalType,false);
