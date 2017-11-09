@@ -6,13 +6,13 @@ using System.Windows.Forms;
 
 namespace ClassLibraryforCSharp
 {
-    class Program
+    class Program19
     {
         public delegate int BinaryOp(int x, int y);
         private static bool isDone = false;
         private static AutoResetEvent waithandle = new AutoResetEvent(false);
 
-        static void Main(string[] args)
+        static void Main19(string[] args)
         {
             Console.WriteLine("Hello world!");
 
