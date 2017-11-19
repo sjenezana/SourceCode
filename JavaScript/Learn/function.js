@@ -136,20 +136,18 @@ var Jack = {
 console.log('var that = this; ' + Jack.age());
 
 //decorator
-var count =  0;
+var count = 0;
 var oldParseInt = parseInt;
-window.praseInt = function(){
-    count +=1;
-    return oldParseInt.apply(null,arguments);
+window.praseInt = function () {
+    count += 1;
+    return oldParseInt.apply(null, arguments);
 };
 praseInt(10);
 praseInt('20');
 praseInt('20');
 console.log(count);//3
 
-
-
-
+// test for interview
 // var x =10;
 // function test(){
 //      console.log(a);
@@ -159,4 +157,109 @@ console.log(count);//3
 //          return 4;
 //      }
 // }
-// test();
+// test();// undefined 4
+
+// Higher-order function 高阶函数
+// define: javascript的函数都指向某个变量，接受另一个函数作为参数的函数就是高阶函数
+function add(x, y, f) {
+    return f(x) + f(y);
+}
+console.log(add(-5, 6, Math.abs));//11
+//map(function)并发的对作用域集合的每个元素进行相同的function处理，最终得到一个集合
+var arr = [1, 2, 3, 4, 56, 7];
+function pow(x) {
+    return x * x;
+}
+var results = arr.map(pow);
+console.log(results);//(6) [1, 4, 9, 16, 3136, 49]
+//reduce
+//[x,y,z].reduce(f)= f(f(x,y),z)
+var arr = ['1', '2', '3'];
+console.log(arr.map(x => praseInt(x)).reduce(function (x, y) {
+    return x * 10 + y;
+}));//123
+//filter
+//去掉重复值
+var arr = ['apple', 'banana', 'orange', 'apple', 'pear', 'pear'];
+var r = arr.filter(function (ele, index, self) {
+    console.log(ele);
+    console.log(index);
+    console.log(self);
+    //Returns the index of the last occurrence of a specified value in an array.
+    return self.indexOf(ele) === index;
+})
+console.log(r);
+//sort array => string array => sort
+var arr = [1, 4, 3, 6, 2, 44];
+console.log(arr.sort());
+console.log(arr.sort(function (x, y) {
+    if (x > y)
+        return 1;
+    if (x < y)
+        return -1;
+    return 0;
+}));
+
+
+//闭包 就是携带状态的函数，并且状态可以对外完全隐藏起来
+//把函数作为结果值返回，返回函数不要引用任何循环变量
+function funccount() {
+    var arr = [];
+    for (var i = 1; i <= 3; i++) {
+        arr.push(function () {
+            return i * i;
+        });
+    }
+    return arr;
+}
+var results = funccount();
+console.log(results[0]);//return i * i;
+var f1 = results[0];
+console.log(f1());//16
+var f2 = results[1];
+console.log(f2());//16
+var f3 = results[2];
+console.log(f3());//16
+
+//引用循环变量 再创建一个函数，用函数的参数绑定当前循环变量的值
+function funccount22() {
+    var arr = [];
+    for (var i = 1; i <= 3; i++) {
+        arr.push((function (n) {
+            return function () { return n * n; }
+        })(i));
+    }
+    return arr;
+}
+var results2 = funccount22();
+var f21 = results2[0];
+console.log(f21());//1
+var f22 = results2[1];
+console.log(f22());//4
+var f23 = results2[2];
+console.log(f23()); //9
+
+//箭头函数 类似于lambda
+//var fn = x => x * x;
+var arr = [1, 2, 11, 1, 0, 18, 12];
+arr.sort((x, y) => {
+    if (x > y)
+        return 1;
+    if (x < y)
+        return -1;
+    return 0;
+});
+console.log(arr);
+
+//generator  function*
+//可以用yield返回多次
+function* foo(x) {
+    yield x + 1;
+    yield x + 2;
+    return x + 3;
+}
+
+var r = foo(1);
+for (var x of r)
+    console.log(x);
+ 
