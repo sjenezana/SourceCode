@@ -7,4 +7,10 @@
         {
         }
     }
+
+    struct struct1 { }
+    struct struct2
+    {
+
+    }
 }

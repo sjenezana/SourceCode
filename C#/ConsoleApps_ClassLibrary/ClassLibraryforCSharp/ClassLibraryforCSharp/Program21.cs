@@ -17,9 +17,16 @@ namespace ClassLibraryforCSharp
             Console.WriteLine("Hello world!");
 
 
-            ADONETMethod();
+            //ADONETMethod();
+            Console.WriteLine("1" + 2 + 3);
+            Console.WriteLine(1 + 2 + "3");
+
+            FibonacciMethod();
+
             Console.ReadLine();
         }
+
+
 
         private static void ADONETMethod()
         {
@@ -32,7 +39,37 @@ namespace ClassLibraryforCSharp
         {
             cn.Open();
         }
-}
- 
+
+
+
+        private static void FibonacciMethod()
+        {
+            Console.WriteLine(FiImp(5));
+
+            int a = 1;
+            var b = 1;
+
+            for (int i = 3; i <= 9; i++)
+            {
+                b = checked(b + a);
+                a = b - a;
+            }
+
+            Console.WriteLine(b);
+        }
+
+        private static int FiImp(int v)
+        {
+            if (v == null || v < 0)
+                return 0;
+            if (v == 0 || v == 1)
+                return 1;
+
+            return FiImp(v - 1) + FiImp(v - 2);
+        }
+    }
+
+
+
 
 }
