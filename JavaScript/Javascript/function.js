@@ -138,7 +138,14 @@ console.log('var that = this; ' + Jack.age());
 //decorator
 var count =  0;
 var oldParseInt = parseInt;
-window.
+window.praseInt = function(){
+    count +=1;
+    return oldParseInt.apply(null,arguments);
+};
+praseInt(10);
+praseInt('20');
+praseInt('20');
+console.log(count);//3
 
 
 
