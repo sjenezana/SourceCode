@@ -1,1 +1,0 @@
-D:\Git\SourceCode\C#\Csharpfullsource\C# in Depth\Snippy\Snippy\bin\Debug\Snippy.exe.config
