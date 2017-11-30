@@ -1,0 +1,18 @@
+DOM document object model
+The W3C Document Object Model (DOM) is a platform and language-neutral interface 
+that allows programs and scripts to dynamically access and update the content, structure, and style of a document
+
+是w3c定义访问文档的标准
+DOM是一个平台和语言中立的接口，允许程序或脚本动态的访问和更新文档内容，结构和文档风格
+分类： Core Dom， XML DOM， HTML DOM
+HTML DOM： 对html的element进行增删改查的标准。
+
+Html DOM methods： 可以在html elements上执行的actions
+Html DOM properties： 可以设置和改变的html elements的values
+e.g. document.getElementById('demo').innerHTML = 'hello document object module.';
+//method getElementById; property innerHTML
+
+
+
+
+
