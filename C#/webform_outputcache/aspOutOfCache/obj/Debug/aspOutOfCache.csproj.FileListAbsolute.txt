@@ -130,3 +130,4 @@ D:\Git\SourceCode\C#\webform_outputcache\aspOutOfCache\bin\Microsoft.Owin.Securi
 D:\Git\SourceCode\C#\webform_outputcache\aspOutOfCache\obj\Debug\aspOutOfCache.csprojResolveAssemblyReference.cache
 D:\Git\SourceCode\C#\webform_outputcache\aspOutOfCache\obj\Debug\aspOutOfCache.dll
 D:\Git\SourceCode\C#\webform_outputcache\aspOutOfCache\obj\Debug\aspOutOfCache.pdb
+D:\Git\SourceCode\C#\webform_outputcache\aspOutOfCache\obj\Debug\aspOutOfCache.csproj.CoreCompileInputs.cache

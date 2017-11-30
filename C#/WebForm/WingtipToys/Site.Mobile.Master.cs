@@ -12,6 +12,11 @@ namespace WingtipToys
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            Page.PreInit += Page_PreInit;
+        }
+        private void Page_PreInit(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
