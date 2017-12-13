@@ -10,8 +10,27 @@ namespace ConsoleAppInterview
     {
         static void Main(string[] args)
         {
+
+            GenericMethod();
+            //Interview();
+            Console.ReadLine();
+
+        }
+
+        private static void GenericMethod()
+        {
+            Node<int, int> node = new Node<int, int>();
+            Console.WriteLine(node.add(2, 1));
+            Node<int, float> node2 = new Node<int, float>();
+            Console.WriteLine(node2.add(2, 1.1f));
+            Node<float, int> node3 = new Node<float, int>();
+            Console.WriteLine(node3.add(2.2f, 1));
+        }
+
+        private static void Interview()
+        {
             //inheritance function priority
-            //加载子类的字段，父类构造函数，子类构造函数，子类重写父类的方法，
+            //继承类的方法的加载优先级：加载子类的字段，父类构造函数，子类构造函数，子类重写父类的方法，
             B b = new B();
             // static
             // static field >static function
@@ -29,7 +48,24 @@ namespace ConsoleAppInterview
             n = new NewClass2();
             n.Print(n);
             n.Print2(n);//NewClass function
-            Console.ReadLine();
+        }
+
+
+        public class Node<T, V>
+        {
+            public T add(T a, V b)
+            {
+                return a;
+            }
+            public T add(V a, T b)
+            {
+                return b;
+            }
+
+            public int add(int a, int b)
+            {
+                return a + b;
+            }
         }
     }
 }

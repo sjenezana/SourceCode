@@ -1,8 +1,8 @@
 JavaScript Function
-[Function](https://johnresig.com/apps/learn/#2)
+//[Function](https://johnresig.com/apps/learn/)
 
   //log info
-  console.log(Math);//show at Console in browser
+console.log(Math);//show at Console in browser
 assert(true, "message");
 log(variable);//show value of var
 assert( true, "I'll pass." );  //pass
