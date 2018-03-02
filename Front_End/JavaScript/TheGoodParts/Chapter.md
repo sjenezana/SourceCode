@@ -1,4 +1,6 @@
 #JavaScript: The Good Parts
+
+
 ## 1. Good Parts
 ### Why？
 JavaScript 是面向浏览器的语言，运行的环境是浏览器；操作的对象是HTML DOM（Document object type）的节点。 
@@ -22,10 +24,11 @@ JavaScript 是面向浏览器的语言，运行的环境是浏览器；操作的
     全局变量：所有作用域中都可见的变量,这也意味着全局变量可以在任意时间被程序的任意部分改变。而且全局变量与子程序中变量名称互相冲突会导致程序无法运行。
         定义全局变量的3种方式：
             1， 函数外部的var语句：　var foo = value;
-            2, web浏览器中，全局对象名为window： window.foo = value;
+            2,  web浏览器中，全局对象名为window： window.foo = value;
             3， 隐式的全局变量， 未经声明的变量: foo = value;
 
 JSLint：编程工具，分析javascript并报告包含的缺点
+
 
 ## 2. Grammer 语法
 ### 1，WhiteSpace 空白
@@ -56,6 +59,7 @@ var用在函数内部时定义的变量是函数的私有变量，作用域为�
     函数
     if（）then {} else {}
     为假的值：false，null，undefined，空字符串‘’，数字0，数字NaN。字符串‘false’也被当作真
+        if (typeof varSample != undefined) then { ... }
     switch （）{ case: ...; break; ... default: ...; }
     while () {}
     do {}while()
@@ -97,8 +101,9 @@ var用在函数内部时定义的变量是函数的私有变量，作用域为�
 ### 8， Functions 函数
     函数字面量定义了函数值：函数名字，参数列表，函数主体（变量定义，语句）     
 
+
 ## 3 Objects 对象  
-Javascript的简单类型：数字，字符串，布尔（true/false），null，undefined和对象。
+Javascript的简单类型：数字，字符串，布尔（true/false），null，undefined和对象(数组也是对象)。
 对象是
     1. 可变的键控集合
     2. 是属性的容器，每个属性都拥有名字和值。名字可以是包含空字符串的任意字符串。只可以为除undefined的任意值
@@ -139,7 +144,7 @@ function f(a,b,c) {
     a = 3;
     //数组也是object，传进来的是原始值的地址，所以原始值也改变
     b.push("foo");
-    // c指向z， 同数组
+    // c指向z， 同数组，c是对象所以会直接改变传入的实参的值
     c.first = false;
 }
 
@@ -159,4 +164,13 @@ b=13;
 console.log(a); //["1", "4", "5"]
 
 
-
+## 4 Functions 函数  
+Javascript的函数包含一组语句，是基础模块单元，用于代码复用&信息隐藏&组合调用。
+函数指定对象的行为。一般性的，编程就是将需求分解成一组函数与数据结构的技能。
+### 1，Function Objects 函数对象
+javascript中函数就是对象。对象=名/值对集合+连接到原型对象的隐藏连接
+函数对象连接到Function。prototype（该原型本身连接到Object。prototype）。
+函数对象创建时会设置一个‘调用’属性，调用函数可以理解为调用此函数的‘调用’属性
+函数对象也有一个prototype属性，其值是拥有constructor属性的对象，该对象的值就是该函数。不同于Function。prototype
+函数是对象，所以也可以被存放在变量，对象和数组中。函数也可以作为参数，可以返回函数，还可以拥有方法！与众不同之处是可以被调用
+### 2， FunctionLiteral 函数字面量 

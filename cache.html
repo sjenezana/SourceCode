@@ -1,0 +1,40 @@
+
+select p.uniquekey, p.filtername, p.mostrecent, p.filtervalue, p.filtersqlvalue, p.filtertext
+from uspgetfilterexpressions('353743451427512407', 'uspgetrvlist') p
+
+clear filter:   uspclearallfilters
+
+                uspclearrepairlistfilters
+
+insert filter: uspinsertgridfilter
+
+update filter: uspupdategridfilter
+
+delete filter: uspdeletegridfilter
+
+ 
+USPGETUNITFIELDVALUELISTINGRID
+
+
+
+
+filter : 
+
+uspgetfilterexpressions
+
+USPGETRVLISTBYUSER,USPGETCVLISTBYUSER,USPGETMOVLISTBYUSER,USPGETLVLISTBYUSER
+
+USPSAVEREPAIRLISTFILTER
+
+USPCLEARREPAIRLISTFILTERS
+
+USPCLEARALLFILTERS
+
+
+SORT:
+USPSETGRIDSORTFIELD
+
+
+
+--20
+
