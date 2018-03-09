@@ -174,3 +174,6 @@ javascript中函数就是对象。对象=名/值对集合+连接到原型对象�
 函数对象也有一个prototype属性，其值是拥有constructor属性的对象，该对象的值就是该函数。不同于Function。prototype
 函数是对象，所以也可以被存放在变量，对象和数组中。函数也可以作为参数，可以返回函数，还可以拥有方法！与众不同之处是可以被调用
 ### 2， FunctionLiteral 函数字面量 
+组成包括四个部分：保留字 function，函数名 可被省略，参数 逗号分隔，语句 包围在花括号中 是函数的主题
+var add = function (a, b) { return a + b;};
+### 3, 
