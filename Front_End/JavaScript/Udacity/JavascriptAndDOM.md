@@ -175,3 +175,21 @@ document.querySelector('h6.text-center').classList
 //DOMTokenList ["text-center", value: "text-center"]
 document.querySelector('h6.text-center').classList.toggle('example')//true
 //DOMTokenList(2) ["text-center", "example", value: "text-center example"]
+
+
+## 浏览器事件 Working with browser events
+DOM事件（[Events]（https://developer.mozilla.org/en-US/docs/Web/Events））被发送用于通知代码相关的事情已经发生了。
+每个事件都是继承自Event 类的对象，可以包括自定义的成员属性及函数用于获取事件发生时相关的更多信息。
+事件可以表示从基本用户交互到渲染模型中发生的事件的自动通知的所有内容。
+### 查看事件
+Chrome浏览器：monitorEvents(document)
+monitorEvents(document); // start displaying all events on the document object
+unmonitorEvents(document); // turn off the displaying of all events on the document object.
+
+### 事件交互
+[EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)：被对象实现的接口，可以接收events和添加监听
+EventTarget是顶级接口，document，Element，window等都是常见的EventTarget，都继承于此
+EventTarget没有属性，只有三个方法
+        .addEventListener()
+        .removeEventListener()
+        .dispatchEvent()
