@@ -178,29 +178,29 @@ document.querySelector('h6.text-center').classList.toggle('example')//true
 
 
 ## 浏览器事件 Working with browser events
-DOM事件（[Events]（https://developer.mozilla.org/en-US/docs/Web/Events））被发送用于通知代码相关的事情已经发生了。
-每个事件都是继承自Event 类的对象，可以包括自定义的成员属性及函数用于获取事件发生时相关的更多信息。
-事件可以表示从基本用户交互到渲染模型中发生的事件的自动通知的所有内容。
+DOM事件([Events](https://developer.mozilla.org/en-US/docs/Web/Events))被发送用于通知代码相关的事情已经发生了.
+每个事件都是继承自Event 类的对象,可以包括自定义的成员属性及函数用于获取事件发生时相关的更多信息.
+事件可以表示从基本用户交互到渲染模型中发生的事件的自动通知的所有内容.
 ### 查看事件
-Chrome浏览器：monitorEvents(document)
+Chrome浏览器:monitorEvents(document)
 monitorEvents(document); // start displaying all events on the document object
 unmonitorEvents(document); // turn off the displaying of all events on the document object.
 
 ### 事件交互
-[EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)：被对象实现的接口，可以接收events和添加监听
-EventTarget是顶级接口，document，Element，window等都是常见的EventTarget，都继承于此
-EventTarget没有属性，只有三个方法
+[EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget):被对象实现的接口,可以接收events和添加监听
+EventTarget是顶级接口,document,Element,window等都是常见的EventTarget,都继承于此
+EventTarget没有属性,只有三个方法
         .addEventListener()
         .removeEventListener()
         .dispatchEvent()
 #### [Adding An Event Listener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
 <target>.addEventListener(<type>, <listener>)
-document。querySelector(‘h1’).addEventListener（‘click’，function（）{
+document.querySelector(‘h1’).addEventListener(‘click’,function(){
     console.log('this is an h1 element is being clicked');
-}）
-target: 事件的目标，浏览器中的任意元素： document， h1， class， id。。。
-type：listen-for， user operate type， click， dbclick。。。
-listener：function-to-run-when-an-event-happens， function（）{}
+})
+target: 事件的目标,浏览器中的任意元素: document, h1, class, id...
+type:listen-for, user operate type, click, dbclick...
+listener:function-to-run-when-an-event-happens, function(){}
 [event lists](https://developer.mozilla.org/en-US/docs/Web/Events)
 
 ### 去掉事件的监听方法
@@ -208,7 +208,7 @@ listener：function-to-run-when-an-event-happens， function（）{}
 JavaScript如何比较两个对象是否相等
         ==  先强制转换成一致的类型 1==‘1’ //true
         === 不进行类型转换        1===‘1’ //false
-    objects, arrays, and functions：
+    objects, arrays, and functions:
         var a = {myFunction: function quiz() { console.log('hi'); }};
         var b = {myFunction: function quiz() { console.log('hi'); }};
             a.myFunction === b.myFunction //false
@@ -218,26 +218,26 @@ JavaScript如何比较两个对象是否相等
             a.myFunction === b.myFunction //true
 #### [remove an event listener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
 target.removeEventListener(type, listener[, options]);
-要去掉添加在某个对象上的监听方法，需要使用添加时的方法，直接去掉方法的字面定义，不起作用
+要去掉添加在某个对象上的监听方法,需要使用添加时的方法,直接去掉方法的字面定义,不起作用
 var clickfun = function () { console.log('this is a dblclick event');}；
 document.addEventListener('dblclick', clickfun)；
 document.removeEventListener('dblclick', clickfun)；
 
 ### Phases of an Events 事件的阶段
 #### 事件的生命周期 [UI Events](https://www.w3.org/TR/uievents/)
-定位阶段：事件对象通过节点传播到目标节点： window，父节点1，父节点2，。。。 目标节点
-目标阶段：事件对象定位到目标节点上 
-冒泡阶段：事件对象从目标节点反向传播到window。每个节点上的事件会被触发，可设置为不触发
+定位阶段:事件对象通过节点传播到目标节点: window,父节点1,父节点2,... 目标节点
+目标阶段:事件对象定位到目标节点上 
+冒泡阶段:事件对象从目标节点反向传播到window.每个节点上的事件会被触发,可设置为不触发
 #### 设置事件触发
-.addEventListener()只有两个参数时，默认是在冒泡阶段触发
-三个参数，且为true时，在定位阶段就会执行
+.addEventListener()只有两个参数时,默认是在冒泡阶段触发
+三个参数,且为true时,在定位阶段就会执行
 document.addEventListener('click', function () {console.log('The document was clicked');}, true);
 Test
 document.addEventListener('click' , function(){console.log('doc');});
 document.body.addEventListener('click' , function(){console.log('doc body');});
-//单击界面：result：doc body/　doc
+//单击界面:result:doc body/　doc
 document.body.addEventListener('click' , function(){console.log('doc2');}, true);
-//单击界面：result：doc2/ doc body/ 
+//单击界面:result:doc2/ doc body/ 
 #### 事件对象 [The Event Object](https://developer.mozilla.org/en-US/docs/Web/API/Event)
 1. 每当单击,双击等事件发生,浏览器会自动包括一个事件对象,即标准的javascript对象,其中包含了大量事件自身的信息
 在监听方法的参数位置添加: event,e,evt,theEvent,horse
@@ -276,7 +276,7 @@ document.querySelector('#content').addEventListener('click', function (evt) {
 Javascript中操作的元素需要已被加载到DOM中,否则会报错.
 解决:1, 将javascript snippet 放到最后执行
     2, 调用事件 [DOMContentLoaded](https://developer.mozilla.org/en-US/docs/Web/Events/DOMContentLoaded)
-    当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载.
+    当初始的 HTML 文档被完全加载和解析完成之后,DOMContentLoaded 事件被触发,而无需等待样式表、图像和子框架的完成加载.
     load 应该仅用于检测一个完全加载的页面
         window.onload = function () {
             console.log('log: window.load');
@@ -291,7 +291,7 @@ Javascript中操作的元素需要已被加载到DOM中,否则会报错.
 
 ## Performance 性能
 ### Add page content efficiently 高效的添加页面内容
-#### Javascript衡量语句的执行时间，window.performance.now()
+#### Javascript衡量语句的执行时间,window.performance.now()
 let t01 = performance.now();
 for (let i = 1; i <= 100; i++) { 
   for (let j = 1; j <= 100; j++) {
@@ -301,9 +301,9 @@ for (let i = 1; i <= 100; i++) {
 let t02 = performance.now();
 console.log('this code took ' + (t02 - t01) +' milliseconds.');
 #### [DocumentFragment](https://developer.mozilla.org/zh-CN/docs/Web/API/DocumentFragment)
-DocumentFragment 接口表示一个没有父级文件的最小文档对象。
-它被当做一个轻量版的 Document 使用，作为参数被添加(append)或被插入(inserted)的是片段的所有子节点, 而非片段本身。
-因为所有的节点会被一次插入到文档中，而这个操作仅发生一个重渲染的操作
+DocumentFragment 接口表示一个没有父级文件的最小文档对象.
+它被当做一个轻量版的 Document 使用,作为参数被添加(append)或被插入(inserted)的是片段的所有子节点, 而非片段本身.
+因为所有的节点会被一次插入到文档中,而这个操作仅发生一个重渲染的操作
 const fragment = document.createDocumentFragment();  // ← uses a DocumentFragment instead of a <div>
 for (let i = 0; i < 200; i++) {
     const newElement = document.createElement('p');
@@ -313,31 +313,31 @@ for (let i = 0; i < 200; i++) {
 document.body.appendChild(fragment); // reflow and repaint here -- once!
 
 ### repaint & reflow 重绘和回流
-重绘： 发生在改变元素外观及可见性，但是不会影响布局的情况下。例如：outline, visibility, background, or color
-回流： 发生在影响页面布局（包括部分页面及整体页面）的情况下。例如：width, height, font-family, font-size。
-    回流会导致元素所有子节点及相关上级节点的回流，其右节点也会回流
-    避免回流： 使用类样式， 使用虚拟DOM，DomcumentFragment替换容器div
-            避免多行内联样式，每一个样式都会引发一次回流，外部样式类只会引起一次
-            使用固定或绝对位置的动画，引起重绘但不会发生回流
-            避免table进行布局，其中的所有元素都会回流
+重绘: 发生在改变元素外观及可见性,但是不会影响布局的情况下.例如:outline, visibility, background, or color
+回流: 发生在影响页面布局(包括部分页面及整体页面)的情况下.例如:width, height, font-family, font-size.
+    回流会导致元素所有子节点及相关上级节点的回流,其右节点也会回流
+    避免回流: 使用类样式, 使用虚拟DOM,DomcumentFragment替换容器div
+            避免多行内联样式,每一个样式都会引发一次回流,外部样式类只会引起一次
+            使用固定或绝对位置的动画,引起重绘但不会发生回流
+            避免table进行布局,其中的所有元素都会回流
             不在css中使用javascript表达式
 
 ### The call stack 回调栈
-单线程： 一次处理一个指令，javascript是单线程的
-调用堆栈：指令执行是顺序的。每当程序运行，方法栈中会入栈main（）方法，它会一直保持运行。
-每当有其他方法被调用，方法栈中会入栈对应的方法，方法执行完成后会对应的出栈
+单线程: 一次处理一个指令,javascript是单线程的
+调用堆栈:指令执行是顺序的.每当程序运行,方法栈中会入栈main()方法,它会一直保持运行.
+每当有其他方法被调用,方法栈中会入栈对应的方法,方法执行完成后会对应的出栈
 
 ### The event loop 事件循环
-同步：code在同一时间存在和发生，所在即执行
-JavaScript event loop: javascript事件循环。
-Javascript并发模型：run-to-completion:如果有代码块在运行，就一直运行完成为止
-                   event loop：如果调用堆栈中没有调用方法了，就去追加事件队列中的任何事件处理。
-                        选取事件队列队首的事件，运行它的处理代码，重复下一个事件
+同步:code在同一时间存在和发生,所在即执行
+JavaScript event loop: javascript事件循环.
+Javascript并发模型:run-to-completion:如果有代码块在运行,就一直运行完成为止
+                   event loop:如果调用堆栈中没有调用方法了,就去追加事件队列中的任何事件处理.
+                        选取事件队列队首的事件,运行它的处理代码,重复下一个事件
 
 ### setTimeout
 .addEventListener()添加的code会在后面事件触发时执行
 setTimeout()则可以指定具体延迟的时间
-setTimeout(function sayHi() {console.log('Howdy');}, 0); //可以断开长语句，允许浏览器处理用户交互，不至于让用户长时间的等待
+setTimeout(function sayHi() {console.log('Howdy');}, 0); //可以断开长语句,允许浏览器处理用户交互,不至于让用户长时间的等待
 ```
 let count = 1
 function generateParagraphs() {
