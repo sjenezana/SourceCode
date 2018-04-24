@@ -24,7 +24,7 @@ JavaScript 是面向浏览器的语言，运行的环境是浏览器；操作的
     全局变量：所有作用域中都可见的变量,这也意味着全局变量可以在任意时间被程序的任意部分改变。而且全局变量与子程序中变量名称互相冲突会导致程序无法运行。
         定义全局变量的3种方式：
             1， 函数外部的var语句：　var foo = value;
-            2,  web浏览器中，全局对象名为window： window.foo = value;
+            2, web浏览器中，全局对象名为window： window.foo = value;
             3， 隐式的全局变量， 未经声明的变量: foo = value;
 
 JSLint：编程工具，分析javascript并报告包含的缺点
@@ -84,7 +84,7 @@ var用在函数内部时定义的变量是函数的私有变量，作用域为�
             new和delete前导的表达式，函数调用，三目运算符
     运算符优先级： 操作符在没有圆括号的情况下决定其执行优先级的属性
         属性存取及函数调用 . [] () 
-        一元运算符 delete new typeof + - ！ 
+        一元运算符 delete new typeof + - ! 
         乘除，取模，加减 
         不等式运算符，等式运算符
         与，或，三元 && || ？：
@@ -95,7 +95,7 @@ var用在函数内部时定义的变量是函数的私有变量，作用域为�
         test "hello";
         var testarr = ["arr1","arr2"];
         testarr[1] "arr2"
-        var testobject = { o1: 'this is o1', fun: function () { return 'return form function'; } };
+        var testobject = { o1: 'this is o1',fun: function () { return 'return form function'; } };
         testobject.fun  ƒ(){ return 'return form function'; };
         testobject.fun() "return form function"
 ### 8， Functions 函数
@@ -134,7 +134,7 @@ student【‘undefined’】&& student【‘undefined’】。anything//undefine
 student【‘first-name’】=‘first-name’；
 若属性名不存在则会被扩充到对象中
 student【‘undefined’】= ‘nowdefined’；//nowdefined
-### 4, reference 引用
+### 4,reference 引用
 对象通过引用传递，他们永远不会被拷贝
 javascript按值传递，但当一个变量指向对象时，变量的值是这个指向对象的的地址
 改变变量的值不会改变原始的基础类型或是object的值，只是将变量指向一个新的基础类型或是object
@@ -149,19 +149,19 @@ function f(a,b,c) {
 }
 
 var x = 4;
-var y = ["eeny", "miny", "mo"];
+var y = ["eeny","miny","mo"];
 var z = {first: true};
 f(x,y,z);
-console.log(x, y, z.first); // 4, ["eeny", "miny", "mo", "foo"], false
+console.log(x,y,z.first); // 4,["eeny","miny","mo","foo"],false
 
-var a = ["1", "2", {foo:"bar"}];
+var a = ["1","2",{foo:"bar"}];
 var b = a[1]; // 按值传递， b是"2";
 var c = a[2]; // c是{foo:"bar"}
-a[1] = "4";   // a is now ["1", "4", {foo:"bar"}]; b仍是被声明时的值 2
-a[2] = "5";   // a is now ["1", "4", "5"];  
-console.log(b, c.foo); // "2" "bar"
+a[1] = "4";   // a is now ["1","4",{foo:"bar"}]; b仍是被声明时的值 2
+a[2] = "5";   // a is now ["1","4","5"];  
+console.log(b,c.foo); // "2" "bar"
 b=13;
-console.log(a); //["1", "4", "5"]
+console.log(a); //["1","4","5"]
 
 
 ## 4 Functions 函数  
@@ -172,10 +172,169 @@ javascript中函数就是对象。对象=名/值对集合+连接到原型对象�
 函数对象连接到Function。prototype（该原型本身连接到Object。prototype）。
 函数对象创建时会设置一个‘调用’属性，调用函数可以理解为调用此函数的‘调用’属性
 函数对象也有一个prototype属性，其值是拥有constructor属性的对象，该对象的值就是该函数。不同于Function。prototype
-函数是对象，所以也可以被存放在变量，对象和数组中。函数也可以作为参数，可以返回函数，还可以拥有方法！与众不同之处是可以被调用
+函数是对象，所以也可以被存放在变量，对象和数组中。函数也可以作为参数，可以返回函数，还可以拥有方法!与众不同之处是可以被调用
 ### 2， FunctionLiteral 函数字面量 
 组成包括四个部分：保留字 function，函数名 可被省略，参数 逗号分隔，语句 包围在花括号中 是函数的主题
-var add = function (a, b) { return a + b;};
+var add = function (a,b) { return a + b;};
 通过函数字面量创建的函数对象包含一个连到外部上下文的连接，这被称为闭包
-### 3, Invocation 调用
+### 3,Invocation 调用
 调用一个函数将暂停当前函数的执行，传递控制权和参数给新函数。
+实参与形参不一致不会导致运行时错误，多的被忽略，少的补为undefined
+每个方法都会收到两个附加参数：this和arguments。this的值取决于调用的模式，调用模式：方法，函数，构造器和apply调用模式
+this被赋值发生在被调用的时刻。不同的调用模式可以用call方法实现
+var myObject = {
+    value: 0,
+    increment: function (inc) {
+        this.value += typeof inc === 'number' ? inc : 1;
+    }
+};
+myObject.double = function(){
+    var helper = function(){
+        console.log(this);// this point to window
+        }
+    console.log(this);// this point to object myObject    
+    helper();
+}
+myObject.double();//myObject  Window 
+
+### 3。1 The Method Invocation Pattern 方法调用模式 
+方法：函数被保存为对象的属性.当方法被调用时，this被绑定到该对象
+公共方法：通过this取得他们所属对象的上下文的方法
+myObject.increment();
+document.writeln(myObject.value);    // 1
+底层实现： myObject.increment。call(myObject，0);
+### 3.2 The Function Invocation Pattern 函数调用模式
+当函数并非对象的属性时就被当作函数调用（有点废话。。），this被绑定到全局对象（window）
+ECMAScript5中新增strict mode， 在这种模式中，为了尽早的暴露出问题，方便调试。this被绑定为undefined
+var add = function (a,b) { return a + b;};
+var sum = add（3，4）；// sum的值为7
+底层实现：add。call（window，3，4）
+        strict mode：add。call（undefined，3，4）
+方法调用模式和函数调用模式的区别
+function hello(thing) {
+  console.log(this + " says hello " + thing);
+}
+person = { name: "Brendan Eich" }
+person.hello = hello; 
+person.hello("world") // [object Object] says hello world 等价于 person。hello。call（person，“world”）
+hello("world") // "[object DOMWindow]world" 等价于 hello。call（window，“world”）
+### 3.3 The Constructor Invocation Pattern
+JavaScript是基于原型继承的语言，同时提供了一套基于类的语言的对象构建语法。
+this指向new返回的对象
+var Quo = function (string) {
+    this.status = string;
+}; 
+Quo.prototype.get_status = function (  ) {
+    return this.status;
+};
+var myQuo = new Quo("this is new quo"); //new容易漏写，有更优替换
+myQuo.get_status(  );// this is new quo
+### 3.4 The Apply Invocation Pattern
+apply和call是javascript的内置参数，都是立刻将this绑定到函数,前者参数是数组，后者要一个个的传递
+apply也是由call底层实现的
+apply(this,arguments[]);
+call(this,arg1,arg2...);
+var person = {  
+  name: "James Smith",
+  hello: function(thing,thing2) {
+    console.log(this.name + " says hello " + thing + thing2);
+  }
+}
+person.hello.call({ name: "Jim Smith" },"world","!"); // output: "Jim Smith says hello world!"
+var args = ["world","!"];
+person.hello.apply({ name: "Jim Smith" },args); // output: "Jim Smith says hello world!"
+相对的bind函数将绑定this到函数和调用函数分离开来，使得函数可以在一个特定的上下文中调用，尤其是事件
+bind的apply实现
+Function.prototype.bind = function(ctx){
+    var fn = this; //fn是绑定的function
+    return function(){
+        fn.apply(ctx, arguments);
+    };
+};
+bind用于事件中
+function MyObject(element) {
+    this.elm = element;
+
+    element.addEventListener('click', this.onClick.bind(this), false);
+};
+//this对象指向的是MyObject的实例
+MyObject.prototype.onClick = function(e) { 
+     var t=this;  //do something with [t]... 
+};
+### 4 Arguments 参数
+函数被调用时会附加一个参数arguments，通过它可以访问函数被调用时传递的参数列表，包括多余的参数.
+arguments并不是真正的数组，是类似数组的对象。有length属性，但没有所有的数组方法
+var sum = function() {
+	let i,sum =0;
+	for(i=0;i<arguments.length;i++){
+	sum += arguments[i];	
+}
+return sum;
+} 
+document.writeln(sum(1,23,4,2,3,4,2,3,4543))//4585
+### 5 Return 返回
+函数被调用时，从第一个语句开始执行到}结束，将控制权交还给函数的调用部分。
+return会立即交还给函数的调用部分
+函数总会返回值，默认是undefined
+以new方式调用的函数，若返回值不是对象，则返回this（新对象）
+### 6 Exception 异常
+throw语句中断函数的执行，抛出exception对象。该对象包含可识别异常类型的属性：name和message，及自定义属性
+try代码块中抛出异常，则恐是全就跳转到catch从句
+var add = function(a,b){
+    if(typeof a != 'number' ||typeof b != 'number')
+        throw {
+            name : 'TypeError',
+            message: 'add needs number'
+        };
+
+        return a+b;
+}
+
+var tryit = function(){
+    try{
+        add('ss');
+    }catch(e){
+        document.writeln(e.name + ':' + e.message);
+    }
+}
+tryit();//TypeError:add needs number
+### 7 Augmenting Types给类型增加方法
+Javascript允许给基本类型增加方法。
+for in语句在原型时表现很糟糕，可以用hasOwnProperty属性筛选出继承而来的属性
+Function.prototype增加方法使得是对所有函数可用.通过给Function。prototype增加method方法，我们就不用键入prototype这个属性名
+Function.prototype.method = function (name, func){
+	if(!this.prototype[name]){
+		this.prototype[name] = func;
+	}
+}
+整数类型的取整函数
+Number.method('integer', function (  ) {
+    return Math[this < 0 ? 'ceil' : 'floor'](this);
+});
+document.writeln((-10 / 3).integer(  ));  // −3 
+字符串去掉空白
+String.method('trim',function(){
+	return this.replace(/^\s+|\s+$/g,'');
+})
+document.writeln("begin."+"   3space3   ".trim()+"end");//begin.3space3end
+### 8 Recursion 递归
+递归函数是直接或间接的调用自身的一种函数.递归，将一个问题分解为一组相似的子问题，每个子问题用一个寻常解去解决。
+递归函数可以非常高效的操作树形结构。
+var walkTheDOM = function walk(node,func){
+	func(node);
+	node = node.firstChild;
+	while(node){
+	walk(node,func);
+	node = node.nextSibling;	
+}
+}; 
+var getElementsByAttribute = function(att, value){
+var results = [];
+walkTheDOM(document.body,function(node){
+	var actual = node.nodeType === 1 && node.getAttribute(att);
+	if(typeof actual === 'string' && (actual === value || typeof value !== 'string')){
+		results.push(node);
+	}
+});
+return results;
+}

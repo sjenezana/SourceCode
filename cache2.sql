@@ -33,6 +33,7 @@ where R.CUSTOMERPO is not null
 软件开发等全生命周期软件开发等全生命周期软件开发等软件开发等全生命周期软件开发等全生命周期软件开发等
 USPUPDATECVDETAIL
 
+软件开发等全生命周期软件开发等全生命周期软件开发等软件开
 
 
 Data Source=alpdmnq01-scan.tsg.ge.com:1521/onndwq01;Persist Security Info=no;User ID=DDSAFM;Password=dda12pwd;
