@@ -1,89 +1,84 @@
- ID="ebCALSIGNALUNIT" "ebtxtTest_CALSIGNALUNIT"  |CALSIGNALUNIT" FLP="1961"  "14" Commands="Menu"  MenuNumber="718">
- ID="ebCALVALREQOPNUNIT" "ebtxtTest_CALVALREQOPNUNIT"  |CALVALREQOPNUNIT" FLP="1962"  "14" Commands="Menu"  MenuNumber="719">
- ID="ebCALPOSITUNIT" "ebtxtTest_CALPOSITUNIT"  |CALPOSITUNIT" FLP="1963"  "14" Commands="Menu"  MenuNumber="720"> 
-</tr>
+## Invocation 调用
+调用一个函数将暂停当前函数的执行,传递控制权和参数给新函数.
+实参与形参不一致不会导致运行时错误,多的被忽略,少的补为undefined
+每个方法都会收到两个附加参数：this和arguments.this的值取决于调用的模式,调用模式：方法,函数,构造器和apply调用模式
+this被赋值发生在被调用的时刻.不同的调用模式可以用call方法实现
+`var myObject = {
+    value: 0,
+    increment: function (inc) {
+        this.value += typeof inc === 'number' ? inc : 1;
+    }
+};
+myObject.double = function(){
+    var helper = function(){
+        console.log(this);// this point to window
+        }
+    console.log(this);// this point to object myObject    
+    helper();
+}
+myObject.double();//myObject  Window 
+`
+### 1 The Method Invocation Pattern 方法调用模式 
+方法：函数被保存为对象的属性.当方法被调用时,this被绑定到该对象
+公共方法：通过this取得他们所属对象的上下文的方法
+`myObject.increment();
+document.writeln(myObject.value);    // 1
+底层实现： myObject.increment.call(myObject,0);`
+### 2 The Function Invocation Pattern 函数调用模式
+当函数并非对象的属性时就被当作函数调用（有点废话..）,this被绑定到全局对象（window）
+ECMAScript5中新增strict mode, 在这种模式中,为了尽早的暴露出问题,方便调试.this被绑定为undefined
+`var add = function (a,b) { return a + b;};
+var sum = add（3,4）；// sum的值为7
+底层实现：add.call（window,3,4）
+        strict mode：add.call（undefined,3,4）`
+方法调用模式和函数调用模式的区别
+`function hello(thing) {
+  console.log(this + " says hello " + thing);
+}
+person = { name: "Brendan Eich" }
+person.hello = hello; 
+person.hello("world") // [object Object] says hello world 等价于 person.hello.call（person,“world”）
+hello("world") // "[object DOMWindow]world" 等价于 hello.call（window,“world”）`
+### 3 The Constructor Invocation Pattern
+JavaScript是基于原型继承的语言,同时提供了一套基于类的语言的对象构建语法.
+this指向new返回的对象
+`var Quo = function (string) {
+    this.status = string;
+}; 
+Quo.prototype.get_status = function (  ) {
+    return this.status;
+};
+var myQuo = new Quo("this is new quo"); //new容易漏写,有更优替换
+myQuo.get_status(  );// this is new quo`
+### 4 The Apply Invocation Pattern
+apply和call是javascript的内置参数,都是立刻将this绑定到函数,前者参数是数组,后者要一个个的传递
+apply也是由call底层实现的
+`apply(this,arguments[]);
+call(this,arg1,arg2...);
+var person = {  
+  name: "James Smith",
+  hello: function(thing,thing2) {
+    console.log(this.name + " says hello " + thing + thing2);
+  }
+}
+person.hello.call({ name: "Jim Smith" },"world","!"); // output: "Jim Smith says hello world!"
+var args = ["world","!"];
+person.hello.apply({ name: "Jim Smith" },args); // output: "Jim Smith says hello world!"`
+相对的,bind函数将绑定this到函数和调用函数分离开来,使得函数可以在一个特定的上下文中调用,尤其是事件
+`bind的apply实现
+Function.prototype.bind = function(ctx){
+    var fn = this; //fn是绑定的function
+    return function(){
+        fn.apply(ctx, arguments);
+    };
+};
+bind用于事件中
+function MyObject(element) {
+    this.elm = element;
+    element.addEventListener('click', this.onClick.bind(this), false);
+};
+//this对象指向的是MyObject的实例
+MyObject.prototype.onClick = function(e) { 
+     var t=this;  //do something with [t]... 
+};`
 
-<tr>
- ID="ebCALSIGPRCT1" "ebtxtTest_CALSIGPRCT1"  |CALSIGPRCT1" Width="20px"   >
- ID="ebTest_CALSIG1" "ebtxtTest_CALSIG1"  |CALSIG1"   >
- ID="ebCALVALREQOPN1" "ebtxtTest_CALVALREQOPN1"  |CALVALREQOPN1"   >
- ID="ebCALPOSIT1_1" "ebtxtTest_CALPOSIT1"  |CALPOSIT1" FLP="1997"    >
- ID="ebAR_CALUP1" "ebtxtTest_AR_CALUP1"  |AR_CALUP1"    ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN1,ebtxtTest_CALUP1,ebtxtTest_CALDN1,ebtxtTest_CALHYST1);}">
- ID="ebCALUP1" "ebtxtTest_CALUP1"  |CALUP1"    ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN1,ebtxtTest_AR_CALUP1,ebtxtTest_AR_CALDN1,ebtxtTest_CALHYST1);}">
- ID="ebAR_CALDN1" "ebtxtTest_AR_CALDN1"  |AR_CALDN1"    ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP1,s,ebtxtTest_CALUP1,ebtxtTest_CALDN1,ebtxtTest_CALHYST1);}">
- ID="ebCALDN1" "ebtxtTest_CALDN1"  |CALDN1"    ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP1,s,ebtxtTest_AR_CALUP1,ebtxtTest_AR_CALDN1,ebtxtTest_CALHYST1);}">
- ID="ebCALHYST1_1" "ebtxtTest_CALHYST1"  |CALHYST1"    ReadOnly="true">
- ID="ebCALAUX1" "ebtxtTest_CALAUX1"  |CALAUX1"   >
-</tr>
-<tr>
- ID="ebCALSIGPRCT2" "ebtxtTest_CALSIGPRCT2"  |CALSIGPRCT2"   >
- ID="ebCALSIG2" "ebtxtTest_CALSIG2"  |CALSIG2"   >
- ID="ebCALVALREQOPN2" "ebtxtTest_CALVALREQOPN2"  |CALVALREQOPN2"   >
- ID="ebCALPOSIT2" "ebtxtTest_CALPOSIT2"  |CALPOSIT2"   >
- ID="ebAR_CALUP2" "ebtxtTest_AR_CALUP2"  |AR_CALUP2"    ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN2,ebtxtTest_CALUP2,ebtxtTest_CALDN2,ebtxtTest_CALHYST2);}">
- ID="ebCALUP2" "ebtxtTest_CALUP2"  |CALUP2"    ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN2,ebtxtTest_AR_CALUP2,ebtxtTest_AR_CALDN2,ebtxtTest_CALHYST2);}">
- ID="ebAR_CALDN2" "ebtxtTest_AR_CALDN2"  |AR_CALDN2"    ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP2,s,ebtxtTest_CALUP2,ebtxtTest_CALDN2,ebtxtTest_CALHYST2);}">
- ID="ebCALDN2" "ebtxtTest_CALDN2"  |CALDN2"    ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP2,s,ebtxtTest_AR_CALUP2,ebtxtTest_AR_CALDN2,ebtxtTest_CALHYST2);}">
- ID="ebCALHYST2" "ebtxtTest_CALHYST2"  |CALHYST2"    ReadOnly="true">
- ID="ebCALAUX2" "ebtxtTest_CALAUX2"  |CALAUX2"   >
-</tr>
-<tr>
- ID="ebCALSIGPRCT3" "ebtxtTest_CALSIGPRCT3"  |CALSIGPRCT3"   >
- ID="ebCALSIG3" "ebtxtTest_CALSIG3"  |CALSIG3"   >
- ID="ebCALVALREQOPN3" "ebtxtTest_CALVALREQOPN3"  |CALVALREQOPN3"   >
- ID="ebCALPOSIT3" "ebtxtTest_CALPOSIT3"  |CALPOSIT3"   >
- ID="ebAR_CALUP3" "ebtxtTest_AR_CALUP3"  |AR_CALUP3"    ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN3,ebtxtTest_CALUP3,ebtxtTest_CALDN3,ebtxtTest_CALHYST3);}">
- ID="ebCALUP3" "ebtxtTest_CALUP3"  |CALUP3"    ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN3,ebtxtTest_AR_CALUP3,ebtxtTest_AR_CALDN3,ebtxtTest_CALHYST3);}">
- ID="ebAR_CALDN3" "ebtxtTest_AR_CALDN3"  |AR_CALDN3"    ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP3,s,ebtxtTest_CALUP3,ebtxtTest_CALDN3,ebtxtTest_CALHYST3);}">
- ID="ebCALDN3" "ebtxtTest_CALDN3"  |CALDN3"    ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP3,s,ebtxtTest_AR_CALUP3,ebtxtTest_AR_CALDN3,ebtxtTest_CALHYST3);}">
- ID="ebCALHYST3" "ebtxtTest_CALHYST3"  |CALHYST3"    ReadOnly="true">
- ID="ebCALAUX3" "ebtxtTest_CALAUX3"  |CALAUX3"    >
-</tr>
-<tr>
- ID="ebCALSIGPRCT4" "ebtxtTest_CALSIGPRCT4"  |CALSIGPRCT4"    >
- ID="ebCALSIG4" "ebtxtTest_CALSIG4"  |CALSIG4"    >
- ID="ebCALVALREQOPN4" "ebtxtTest_CALVALREQOPN4"  |CALVALREQOPN4"    >
- ID="ebCALPOSIT4" "ebtxtTest_CALPOSIT4"  |CALPOSIT4"    >
- ID="ebAR_CALUP4" "ebtxtTest_AR_CALUP4"  |AR_CALUP4"     ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN4,ebtxtTest_CALUP4,ebtxtTest_CALDN4,ebtxtTest_CALHYST4);}">
- ID="ebCALUP4" "ebtxtTest_CALUP4"  |CALUP4"     ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN4,ebtxtTest_AR_CALUP4,ebtxtTest_AR_CALDN4,ebtxtTest_CALHYST4);}">
- ID="ebAR_CALDN4" "ebtxtTest_AR_CALDN4"  |AR_CALDN4"     ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP4,s,ebtxtTest_CALUP4,ebtxtTest_CALDN4,ebtxtTest_CALHYST4);}">
- ID="ebCALDN4" "ebtxtTest_CALDN4"  |CALDN4"     ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP4,s,ebtxtTest_AR_CALUP4,ebtxtTest_AR_CALDN4,ebtxtTest_CALHYST4);}">
- ID="ebCALHYST4" "ebtxtTest_CALHYST4"  |CALHYST4"     ReadOnly="true">
- ID="ebCALAUX4" "ebtxtTest_CALAUX4"  |CALAUX4"    >
-</tr>
-<tr>
- ID="ebCALSIGPRCT5" "ebtxtTest_CALSIGPRCT5"  |CALSIGPRCT5"    >
- ID="ebCALSIG5" "ebtxtTest_CALSIG5"  |CALSIG5"    >
- ID="ebCALVALREQOPN5" "ebtxtTest_CALVALREQOPN5"  |CALVALREQOPN5"    >
- ID="ebCALPOSIT5" "ebtxtTest_CALPOSIT5"  |CALPOSIT5"    >
- ID="ebAR_CALUP5" "ebtxtTest_AR_CALUP5"  |AR_CALUP5"     ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN5,ebtxtTest_CALUP5,ebtxtTest_CALDN5,ebtxtTest_CALHYST5);}">
- ID="ebCALUP5" "ebtxtTest_CALUP5"  |CALUP5"     ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN5,ebtxtTest_AR_CALUP5,ebtxtTest_AR_CALDN5,ebtxtTest_CALHYST5);}">
- ID="ebAR_CALDN5" "ebtxtTest_AR_CALDN5"  |AR_CALDN5"     ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP5,s,ebtxtTest_CALUP5,ebtxtTest_CALDN5,ebtxtTest_CALHYST5);}">
- ID="ebCALDN5" "ebtxtTest_CALDN5"  |CALDN5"     ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP5,s,ebtxtTest_AR_CALUP5,ebtxtTest_AR_CALDN5,ebtxtTest_CALHYST5);}">
- ID="ebCALHYST5" "ebtxtTest_CALHYST5"  |CALHYST5"     ReadOnly="true">
- ID="ebCALAUX5" "ebtxtTest_CALAUX5"  |CALAUX5"    >
-</tr>
-<tr>
- ID="ebCALSIGPRCT6" "ebtxtTest_CALSIGPRCT6"  |CALSIGPRCT6"    >
- ID="ebCALSIG6" "ebtxtTest_CALSIG6"  |CALSIG6"    >
- ID="ebCALVALREQOPN6" "ebtxtTest_CALVALREQOPN6"  |CALVALREQOPN6"    >
- ID="ebCALPOSIT6" "ebtxtTest_CALPOSIT6"  |CALPOSIT6"    >
- ID="ebAR_CALUP6" "ebtxtTest_AR_CALUP6"  |AR_CALUP6"     ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN6,ebtxtTest_CALUP6,ebtxtTest_CALDN6,ebtxtTest_CALHYST6);}">
- ID="ebCALUP6" "ebtxtTest_CALUP6"  |CALUP6"     ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN6,ebtxtTest_AR_CALUP6,ebtxtTest_AR_CALDN6,ebtxtTest_CALHYST6);}">
- ID="ebAR_CALDN6" "ebtxtTest_AR_CALDN6"  |AR_CALDN6"     ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP6,s,ebtxtTest_CALUP6,ebtxtTest_CALDN6,ebtxtTest_CALHYST6);}">
- ID="ebCALDN6" "ebtxtTest_CALDN6"  |CALDN6"     ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP6,s,ebtxtTest_AR_CALUP6,ebtxtTest_AR_CALDN6,ebtxtTest_CALHYST6);}">
- ID="ebCALHYST6" "ebtxtTest_CALHYST6"  |CALHYST6"     ReadOnly="true">
- ID="ebCALAUX6" "ebtxtTest_CALAUX6"  |CALAUX6"    >
-</tr>
-<tr>
- ID="ebCALSIGPRCT7" "ebtxtTest_CALSIGPRCT7"  |CALSIGPRCT7"    >
- ID="ebCALSIG7" "ebtxtTest_CALSIG7"  |CALSIG7"    >
- ID="ebCALVALREQOPN7" "ebtxtTest_CALVALREQOPN7"  |CALVALREQOPN7"    >
- ID="ebCALPOSIT7" "ebtxtTest_CALPOSIT7"  |CALPOSIT7"    >
- ID="ebAR_CALUP7" "ebtxtTest_AR_CALUP7"  |AR_CALUP7"     ="function(s,e){PositionAsReceived_TextChanged(s,ebtxtTest_AR_CALDN7,ebtxtTest_CALUP7,ebtxtTest_CALDN7,ebtxtTest_CALHYST7);}">
- ID="ebCALUP7" "ebtxtTest_CALUP7"  |CALUP7"     ="function(s,e){PositionAsShipped_TextChanged(s,ebtxtTest_CALDN7,ebtxtTest_AR_CALUP7,ebtxtTest_AR_CALDN7,ebtxtTest_CALHYST7);}">
- ID="ebAR_CALDN7" "ebtxtTest_AR_CALDN7"  |AR_CALDN7"     ="function(s,e){PositionAsReceived_TextChanged(ebtxtTest_AR_CALUP7,s,ebtxtTest_CALUP7,ebtxtTest_CALDN7,ebtxtTest_CALHYST7);}">
- ID="ebCALDN7" "ebtxtTest_CALDN7"  |CALDN7"     ="function(s,e){PositionAsShipped_TextChanged(ebtxtTest_CALUP7,s,ebtxtTest_AR_CALUP7,ebtxtTest_AR_CALDN7,ebtxtTest_CALHYST7);}">
- ID="ebCALHYST7" "ebtxtTest_CALHYST7"  |CALHYST7"     ReadOnly="true">
- ID="ebCALAUX7" "ebtxtTest_CALAUX7"  |CALAUX7"    >
-</tr>
