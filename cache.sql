@@ -1,84 +1,285 @@
-## Invocation 调用
-调用一个函数将暂停当前函数的执行,传递控制权和参数给新函数.
-实参与形参不一致不会导致运行时错误,多的被忽略,少的补为undefined
-每个方法都会收到两个附加参数：this和arguments.this的值取决于调用的模式,调用模式：方法,函数,构造器和apply调用模式
-this被赋值发生在被调用的时刻.不同的调用模式可以用call方法实现
-`var myObject = {
-    value: 0,
-    increment: function (inc) {
-        this.value += typeof inc === 'number' ? inc : 1;
-    }
-};
-myObject.double = function(){
-    var helper = function(){
-        console.log(this);// this point to window
-        }
-    console.log(this);// this point to object myObject    
-    helper();
-}
-myObject.double();//myObject  Window 
-`
-### 1 The Method Invocation Pattern 方法调用模式 
-方法：函数被保存为对象的属性.当方法被调用时,this被绑定到该对象
-公共方法：通过this取得他们所属对象的上下文的方法
-`myObject.increment();
-document.writeln(myObject.value);    // 1
-底层实现： myObject.increment.call(myObject,0);`
-### 2 The Function Invocation Pattern 函数调用模式
-当函数并非对象的属性时就被当作函数调用（有点废话..）,this被绑定到全局对象（window）
-ECMAScript5中新增strict mode, 在这种模式中,为了尽早的暴露出问题,方便调试.this被绑定为undefined
-`var add = function (a,b) { return a + b;};
-var sum = add（3,4）；// sum的值为7
-底层实现：add.call（window,3,4）
-        strict mode：add.call（undefined,3,4）`
-方法调用模式和函数调用模式的区别
-`function hello(thing) {
-  console.log(this + " says hello " + thing);
-}
-person = { name: "Brendan Eich" }
-person.hello = hello; 
-person.hello("world") // [object Object] says hello world 等价于 person.hello.call（person,“world”）
-hello("world") // "[object DOMWindow]world" 等价于 hello.call（window,“world”）`
-### 3 The Constructor Invocation Pattern
-JavaScript是基于原型继承的语言,同时提供了一套基于类的语言的对象构建语法.
-this指向new返回的对象
-`var Quo = function (string) {
-    this.status = string;
-}; 
-Quo.prototype.get_status = function (  ) {
-    return this.status;
-};
-var myQuo = new Quo("this is new quo"); //new容易漏写,有更优替换
-myQuo.get_status(  );// this is new quo`
-### 4 The Apply Invocation Pattern
-apply和call是javascript的内置参数,都是立刻将this绑定到函数,前者参数是数组,后者要一个个的传递
-apply也是由call底层实现的
-`apply(this,arguments[]);
-call(this,arg1,arg2...);
-var person = {  
-  name: "James Smith",
-  hello: function(thing,thing2) {
-    console.log(this.name + " says hello " + thing + thing2);
-  }
-}
-person.hello.call({ name: "Jim Smith" },"world","!"); // output: "Jim Smith says hello world!"
-var args = ["world","!"];
-person.hello.apply({ name: "Jim Smith" },args); // output: "Jim Smith says hello world!"`
-相对的,bind函数将绑定this到函数和调用函数分离开来,使得函数可以在一个特定的上下文中调用,尤其是事件
-`bind的apply实现
-Function.prototype.bind = function(ctx){
-    var fn = this; //fn是绑定的function
-    return function(){
-        fn.apply(ctx, arguments);
-    };
-};
-bind用于事件中
-function MyObject(element) {
-    this.elm = element;
-    element.addEventListener('click', this.onClick.bind(this), false);
-};
-//this对象指向的是MyObject的实例
-MyObject.prototype.onClick = function(e) { 
-     var t=this;  //do something with [t]... 
-};`
+create or replace PROCEDURE USPUMVALIDATEUSER (
+    IN_TENANTCODE IN NVarchar2,
+    IN_USERNAME IN Varchar2,
+    IN_PASSWORD IN Varchar2,
+    IN_LASTLOGIN IN Varchar2,
+    OUT_USERID OUT Varchar2,
+    OUT_TENANTKEY OUT Varchar2,
+    OUT_VALIDATERESULT OUT Varchar2)
+AS
+/*
+SELECT p.UserID, p.OUT_VALIDATERESULT
+FROM USPUMVALIDATEUSER('MC', 'vk6', '20111201090000', 'VK6') p
+*/
 
+/******************************************************************************
+**  File:        uspUMValidateUser
+**  Description: Validate VKUser Password
+**  Returns:     
+**  Params:      
+**               @Passward - The password of the user
+**               @Username - The name of the  user
+**               @ApplicationName
+*******************************************************************************
+**  Change History
+*******************************************************************************
+**	Author	        Date	    TFS	    Description
+**	Luke		    2010/06/10	n/a  	Original.
+**	
+*******************************************************************************
+**	Author	        Date				    Description
+**	Luke				2010/12/10 		update after review.
+**	Marco			2014/01/15		add logincount
+**	Marco			2014/12/19		Convert to oracle
+**	Marco			2015/02/07		Fix 7 day fitler issue
+**	Marco			2015/07/06		Make password case-sensitive
+**  Jerry Chen    2015/07/06        N/A     Add tenantkey
+**  Jerry Chen    2015/07/08        N/A     get lock information from VKUSER
+**  Jerry Chen    2015/07/13        N/A     If user name does not exists, return NULLUSER
+**  Jerry Chen    2015/07/21        N/A     get right minute from date
+**  Jerry Chen    2015/07/22        N/A     check tenant active and customer role
+**  Jerry Chen    2015/07/24        N/A     if user login succeed, then the lock information should be cleared.
+**	Jerry Chen		2015/11/20      DE15317     Lock time issue - minus value shows up
+**	Marco			2016/05/16		Clear user session template/inernal when login
+**	Jerry Chen      2017/03/20  US201598  VKC: RedTeam Test - Weak Password Storage
+**  Jerry Chen      2017/05/16  N/A  when get user roleID, should add tenant key as condition
+**	Marco Cao		2015/07/06 count customer login owner/plant 
+**  Jerry Chen      2017/05/16  US250544  VKC: Make default tenant settings and customer role settings
+**  Jerry Chen      2018/04/11  US266674	VKC: Session Template/Internal is not cleared if user login with super password
+**	Ben Song			2018/05/03			US317749 VKV:Owner/Plant page, the VKV Logins and Last Login columns...verify the query
+*******************************************************************************/
+PWD VARCHAR2(50);
+SALTPASSWORD VARCHAR2(50);
+ISLOCKEDOUT CHAR(1);
+PASSWORDEXPIRES CHAR(1);
+v_LASTLOGIN VARCHAR2(20);
+LASTLOGINDIFFDATE INTEGER;
+OWNERKEY VARCHAR2(40);
+PLANTKEY VARCHAR2(40);
+OWNERKEY2 VARCHAR2(40);
+PLANTKEY2 VARCHAR2(40);
+ALLOP CHAR(1);
+KEYTYPE VARCHAR2(50);
+ROWCOUNT NUMBER(10);
+v_FILTERDAY NUMBER(10);
+V_LOCKDATE timestamp;
+V_TIMELEFT NUMBER(10);
+
+V_ACTIVE VARCHAR2(50);
+V_CUSTOMER_ACTIVE VARCHAR2(50);
+V_CUSTOMERROLEONLY VARCHAR2(50);
+V_ROLEID VARCHAR2(50);
+V_ROLENAME  VARCHAR2(50);
+
+V_ISCUSTOMER CHAR(1);
+v_KeyType VARCHAR2(20);
+v_OK VARCHAR2(40);
+v_PK VARCHAR2(40);
+BEGIN
+    OUT_VALIDATERESULT := 'False';    
+	
+  BEGIN    
+    SELECT UNIQUEKEY, ACTIVE, CUSTOMER_ACTIVE, CUSTOMERROLEONLY
+    INTO OUT_TENANTKEY, V_ACTIVE, V_CUSTOMER_ACTIVE, V_CUSTOMERROLEONLY
+    FROM TENANT WHERE UPPER(TENANT_CODE)=UPPER(IN_TENANTCODE);
+  
+    SELECT	USERID, "PASSWORD", SALTPASSWORD, ISLOCKEDOUT, PASSWORDEXPIRES, LASTLOGIN, LASTLOCKEDOUTDATE
+      INTO	OUT_USERID, PWD, SALTPASSWORD, ISLOCKEDOUT, PASSWORDEXPIRES, v_LASTLOGIN, V_LOCKDATE
+    FROM	VKUSER
+      WHERE	UPPER(USERNAME) = UPPER(IN_UserName)
+       AND		TENANTKEY = OUT_TENANTKEY;
+    EXCEPTION
+      WHEN no_data_found
+      THEN
+      OUT_USERID := NULL;
+  END; 
+  SELECT  round(extract( day from diff )*24*60 + extract( hour from diff )*60 + extract( minute from diff ) ) INTO V_TIMELEFT from (select (systimestamp - to_timestamp(V_LOCKDATE)) diff from dual);
+  IF  abs(V_TIMELEFT) >= 30 THEN
+    BEGIN
+      --ISLOCKEDOUT := 'F';
+      UPDATE VKUSER 
+      SET FAILEDPWDATTEMPTCOUNT = null, LASTLOCKEDOUTDATE = null
+      WHERE UPPER(USERNAME) = UPPER(IN_UserName)
+        AND	TENANTKEY = OUT_TENANTKEY;
+        V_LOCKDATE := null;
+    END;
+  END IF;
+      
+
+	IF LENGTH(v_LASTLOGIN) = 14 THEN
+		LASTLOGINDIFFDATE := V_TIMELEFT;
+	END IF;
+  
+  IF OUT_USERID IS NULL THEN
+    OUT_VALIDATERESULT := 'NULLUSER';
+  ELSIF ISLOCKEDOUT = 'T' THEN
+    OUT_VALIDATERESULT := 'USERISPREVENTLOGIN';
+  ELSIF V_LOCKDATE is not null THEN
+    OUT_VALIDATERESULT := 'Locked;' || (30 - V_TIMELEFT);
+  ELSIF PASSWORDEXPIRES = 'T' AND LASTLOGINDIFFDATE > 90 THEN
+    OUT_VALIDATERESULT := 'Expired';
+  ELSIF (PWD <> IN_Password) THEN
+    OUT_VALIDATERESULT := 'False';
+  ELSE
+    BEGIN
+      SELECT ROLEID INTO V_ROLEID FROM VKUSERROLE WHERE USERID=OUT_USERID AND TENANTKEY = OUT_TENANTKEY;
+      SELECT R.ROLENAME, ISCUSTOMER INTO V_ROLENAME, V_ISCUSTOMER
+          FROM VKROLE R LEFT JOIN VKUSERROLE U ON 
+          R.ROLEID = U.ROLEID  AND U.USERID = OUT_USERID AND U.TENANTKEY = OUT_TENANTKEY
+          where R.TENANTKEY = OUT_TENANTKEY AND R.ROLEID=V_ROLEID;
+  
+      IF (V_ACTIVE <> 'T') THEN
+      BEGIN
+        OUT_VALIDATERESULT := 'ACTIVETENANT';
+      END;
+      ELSIF(V_CUSTOMERROLEONLY = 'T') THEN
+      BEGIN
+        IF(V_ROLENAME = 'Customer') THEN
+            OUT_VALIDATERESULT := 'True';
+        ELSE
+            OUT_VALIDATERESULT := 'CUSTOMERROLEONLY';
+        END IF;
+      END;      
+      ELSE
+        OUT_VALIDATERESULT := 'True';
+      END IF;
+    END;
+  END IF;
+  -- Clear user session template/inernal when login
+  IF (OUT_VALIDATERESULT <> 'NULLUSER') THEN
+    UPDATE	USERPREFERENCE
+    SET		SESSIONTEMPLATEID = NULL, SESSIONINTERNALID = NULL
+    WHERE	USERKEY = OUT_USERID AND TENANTKEY = OUT_TENANTKEY;
+  END IF;
+	IF OUT_VALIDATERESULT = 'True' THEN 
+
+
+		SELECT	COUNT(*)	INTO	ROWCOUNT
+		FROM	AccessPlants
+		WHERE	USERID = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+
+
+		IF ROWCOUNT = 0 THEN
+			SELECT	EX9, EX10, ALLOP
+			INTO	OWNERKEY, PLANTKEY, ALLOP
+			FROM	USERID
+			WHERE	UPPER(USERNAME) = UPPER(IN_UserName) AND TENANTKEY=OUT_TENANTKEY;
+			
+
+			IF ALLOP = 'T' THEN
+				KEYTYPE := 'AllOwners';
+				OWNERKEY := NULL;
+				PLANTKEY := NULL;
+			ELSIF COALESCE(PLANTKEY, '') <> '' AND PLANTKEY <> 'ALL' THEN
+				KEYTYPE := 'SinglePlant';
+			ELSIF (COALESCE(OWNERKEY, '') <> '' AND OWNERKEY <> 'ALL') THEN
+				KEYTYPE := 'SingleOwner';
+				PLANTKEY := NULL;
+			ELSE
+				KEYTYPE := 'None';
+				OWNERKEY := NULL;
+				PLANTKEY := NULL;
+      END IF;
+
+			INSERT INTO AccessPlants
+			(UserID,TENANTKEY,KeyType,	OwnerKey,PlantKey)
+			VALUES
+			(OUT_USERID,  OUT_TENANTKEY,KEYTYPE,OWNERKEY,PLANTKEY);	
+
+			DELETE FROM	WorkingPlants
+			WHERE	USERID = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+
+			INSERT INTO WorkingPlants
+			(	UserID, TENANTKEY,KeyType,	OwnerKey,PlantKey)
+			VALUES
+			(OUT_USERID, OUT_TENANTKEY,KEYTYPE,	OWNERKEY,	PLANTKEY);
+
+			IF KEYTYPE = 'AllOwners' THEN
+				OWNERKEY2 := 'ALL';
+				PLANTKEY2 := 'ALL';
+			ELSIF KEYTYPE = 'None' THEN
+				OWNERKEY2 := 'NONE';
+				PLANTKEY2 := 'NONE';
+			ELSIF KEYTYPE = 'SingleOwner' THEN
+				OWNERKEY2 := OWNERKEY;
+				PLANTKEY2 := 'ALL';
+			ELSIF KEYTYPE = 'SinglePlant' THEN
+				OWNERKEY2 := OWNERKEY;
+				PLANTKEY2 := PLANTKEY;
+			END IF;
+
+			UPDATE	VKUSER
+			SET		OWNERKEY = OWNERKEY2,	PLANTKEY = PLANTKEY2
+			WHERE	USERID = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+
+			USPCLEARALLFILTERS(OUT_USERID);
+
+			DELETE FROM	RECENTLYITEM			WHERE	USERKEY = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+		END IF;
+
+		SELECT	COUNT(*) INTO ROWCOUNT
+		FROM	WorkingPlants
+		WHERE	USERID = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+
+		IF ROWCOUNT = 0 THEN
+			INSERT INTO WorkingPlants
+			(UserID,  TENANTKEY,KeyType,	OwnerKey,PlantKey)
+			SELECT	UserID, TENANTKEY, KeyType, OwnerKey, PlantKey
+			FROM	AccessPlants
+			WHERE	USERID = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+
+			USPCLEARALLFILTERS(OUT_USERID);
+
+			DELETE	FROM	RECENTLYITEM
+			WHERE	USERKEY = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+		END IF;
+    
+	--count customer login owner/plant 
+	IF V_ISCUSTOMER = 'T' THEN
+		BEGIN
+		SELECT KeyType, OwnerKey, PlantKey INTO v_KeyType, v_OK, v_PK FROM WorkingPlants  
+			  WHERE UserID = OUT_USERID AND ROWNUM=1 AND TENANTKEY=OUT_TENANTKEY;
+		EXCEPTION
+		  WHEN no_data_found
+		  THEN
+			v_KeyType := NULL;
+			v_OK := NULL;
+			v_PK := NULL; 
+		END; 
+
+	  UPDATE	VKUSER
+		SET		LASTLOGIN = IN_LastLogin, LOGINCOUNT = LOGINCOUNT +1,
+         FAILEDPWDATTEMPTCOUNT = null, ISLOCKEDOUT='F', LASTLOCKEDOUTDATE = null
+		WHERE	USERID = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+        
+		IF (v_KeyType = 'SingleOwner') THEN
+			UPDATE OWNERS SET EI1=DECODE(EI1,null,0,EI1)+1, E1=IN_LastLogin WHERE TENANTKEY=OUT_TENANTKEY AND UniqueKey = v_OK;
+		ELSIF (v_KeyType = 'SinglePlant') THEN
+			UPDATE OWNERS SET EI1=DECODE(EI1,null,0,EI1)+1, E1=IN_LastLogin WHERE TENANTKEY=OUT_TENANTKEY AND UniqueKey = v_OK;
+			UPDATE PLANTS SET EI1=DECODE(EI1,null,0,EI1)+1, E1=IN_LastLogin WHERE TENANTKEY=OUT_TENANTKEY AND OwnerKey = v_OK   AND UniqueKey = v_PK;
+		END IF;
+	END IF;
+
+  BEGIN
+		SELECT	FILTERDAY INTO v_FILTERDAY
+		FROM	USERPREFERENCE
+		WHERE	USERKEY = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+    EXCEPTION
+      WHEN no_data_found
+      THEN
+      v_FILTERDAY := NULL;
+  END; 
+	IF v_FILTERDAY IS NOT NULL THEN
+		IF LASTLOGINDIFFDATE > 7 THEN
+			USPCLEARALLFILTERS(OUT_USERID);
+			UPDATE	USERPREFERENCE	SET		FILTERDAY = NULL
+			WHERE	USERKEY = OUT_USERID AND		TENANTKEY = OUT_TENANTKEY;
+		END IF; 
+	ELSE
+		IF LASTLOGINDIFFDATE > 1 THEN
+			USPCLEARALLFILTERS(OUT_USERID);
+    END IF;
+  END IF;
+  END IF;
+	
+END USPUMVALIDATEUSER;

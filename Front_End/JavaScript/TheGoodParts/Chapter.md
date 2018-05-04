@@ -319,6 +319,24 @@ document.writeln("begin."+"   3space3   ".trim()+"end");//begin.3space3end
 ### 8 Recursion 递归
 递归函数是直接或间接的调用自身的一种函数.递归,将一个问题分解为一组相似的子问题,每个子问题用一个寻常解去解决.
 尾递归：如果函数返回自身递归调用的结果.那么调用的过程会被替换为循环,只是JS不支持尾递归优化.
+汉诺塔的递归解法:理解递归两层之间的交接,以及递归终结的条件.
+盘分为最大盘和非最大盘,
+var hanoi = function (disc, s, a, d) {
+    if (disc > 0) {
+        hanoi(disc - 1, s, d, a);//辅助位置作为目标位
+        console.log('move disc' + disc + ' from ' + s + ' to ' + d + "\n");
+        hanoi(disc - 1, a, s, d);//辅助位置作为起始位
+    }
+}
+hanoi(3, 'a1','a2','a3')
+move disc1 from a1 to a3
+move disc2 from a1 to a2
+move disc1 from a3 to a2
+move disc3 from a1 to a3
+move disc1 from a2 to a1
+move disc2 from a2 to a3
+move disc1 from a1 to a3
+
 递归函数可以非常高效的操作树形结构.
 var walkTheDOM = function walk(node,func){
 	func(node);
@@ -401,8 +419,8 @@ C等其他语言中在函数返回后,因为栈帧被销毁,其局部变量就�
 	var sayNumber = sayHello3();
 	sayNumber(); // logs 43
 #### 4
-同一个闭包可以同时被多个函数所访问，setupSomeGlobals（）中的局部变量可以同时被3个方法调用
-但是，setupSomeGlobals一旦被重新调用，新的闭包就会被创建，堆上一块新的内存被分配。
+同一个闭包可以同时被多个函数所访问,setupSomeGlobals()中的局部变量可以同时被3个方法调用
+但是,setupSomeGlobals一旦被重新调用,新的闭包就会被创建,堆上一块新的内存被分配。
 	
 	var gLogNumber, gIncreaseNumber, gSetNumber;
 	function setupSomeGlobals() {
@@ -421,8 +439,8 @@ C等其他语言中在函数返回后,因为栈帧被销毁,其局部变量就�
 	gLogNumber()； //42 
 	oldLog()；//6
 #### 5
-JavaScript函数中var/let声明的函数作用域为整个函数内部，所以，闭包包含外部函数中所有的在其return之前的局部变量。
-javascript的特性：variable hoisting： 变量提前化，变量会被挪到其作用域（函数，代码块。。。）的最开始位置
+JavaScript函数中var/let声明的函数作用域为整个函数内部,所以,闭包包含外部函数中所有的在其return之前的局部变量。
+javascript的特性：variable hoisting： 变量提前化,变量会被挪到其作用域(函数,代码块。。。)的最开始位置
 
 	function sayAlice() {
 	    var say = function() { console.log(alice); } //anonymous function declared first
@@ -432,10 +450,10 @@ javascript的特性：variable hoisting： 变量提前化，变量会被挪到�
 	sayAlice()();// logs "Hello Alice"
 #### 6
 返回共享一个闭包的函数数组
-buildList返回的是根据list的个数生成的方法数组，共享一个闭包，也包括其局部变量i
-当fnlist[j]()调用匿名函数（function(){console.log(item + '_' + i +'_'+ list[i])}）时，都指向同一闭包
-**此时var声明的索引变量i作用域是整个for循环体，因为for循环已经遍历完成，匿名函数对应的局部变量都变成了3**
-**而let声明的变量k的作用域是匿名函数，不同的遍历阶段，匿名函数中的k值是不一致的**
+buildList返回的是根据list的个数生成的方法数组,共享一个闭包,也包括其局部变量i
+当fnlist[j]()调用匿名函数(function(){console.log(item + '_' + i +'_'+ list[i])})时,都指向同一闭包
+**此时var声明的索引变量i作用域是整个for循环体,因为for循环已经遍历完成,匿名函数对应的局部变量都变成了3**
+**而let声明的变量k的作用域是匿名函数,不同的遍历阶段,匿名函数中的k值是不一致的**
 
 	//var
 	function buildList(list){
@@ -483,24 +501,24 @@ buildList返回的是根据list的个数生成的方法数组，共享一个闭�
 	fn1(1) // num:5,anArray:1,2,3,5,ref.someVar:4 
 	fn2(1) // num:6,anArray:1,2,3,6,ref.someVar:4
 #### Note
-1. 在function中使用另一个function，就会使用闭包.但是构造器函数New Function（）不会使用闭包
-2. 闭包可以视作一个函数的入口以及与此函数的相关的局部变量（函数退出时的局部变量的副本）的组合
-3. 每次调用有闭包的函数，都会保留一组新的局部变量（如果函数包含一个内部函数，并且内部函数的引用被返回或以某种方式保留）
-4. 因为隐秘的闭包，两个函数看起来可能有相同的源代码，但实际的作用完全不同
+1. 在function中使用另一个function,就会使用闭包.但是构造器函数New Function()不会使用闭包
+2. 闭包可以视作一个函数的入口以及与此函数的相关的局部变量(函数退出时的局部变量的副本)的组合
+3. 每次调用有闭包的函数,都会保留一组新的局部变量(如果函数包含一个内部函数,并且内部函数的引用被返回或以某种方式保留)
+4. 因为隐秘的闭包,两个函数看起来可能有相同的源代码,但实际的作用完全不同
 5. 闭包在处理速度和内存消耗方面对脚本有负面影响
 6. 闭包可用来构建[JavaScript私有成员](http://www.crockford.com/javascript/private.html)
 ### 11 Callbacks 回调
 回调让不连续事件的处理变得更容易。异步方法多采用回调函数
-伪代码：用户交互，向服务器发送请求，最终显示服务器的响应。同步实现
+伪代码：用户交互,向服务器发送请求,最终显示服务器的响应。同步实现
 request = prepare_teh_request();
 response = send_request_synchronously(request);
 display(response);
-异步实现，display作为回调函数返回
+异步实现,display作为回调函数返回
 request = prepare_the_request();
 send_request_asynchronously(request, function(response){display(response)});//**不理解这里的response是如何得到的**
 ### 12 Module 模块
 模块是提供接口却隐藏状态与实现的函数或对象。实现：函数+闭包,利用函数作用域和闭包来创建绑定对象与私有成员的关联。
-通过函数产生模块，几乎可以替代全局变量的使用。
+通过函数产生模块,几乎可以替代全局变量的使用。
 
 Function.prototype.method = function (name, func){
 	if(!this.prototype[name]){
@@ -534,10 +552,10 @@ seqer.set_prefix('Q');seqer.set_seq(1000);
 seqer.gensym() //"Q1000"
 seqer.gensym() //"Q1001"
 ### 13 Cascade 级联
-有些方法没有返回值（默认undefined），例如，设置或修改对象的某个状态却不返回值的方法。
-若我们让这些方法返回this，就可以启用级联。级联可以产生出具备很强表现力的接口。
+有些方法没有返回值(默认undefined),例如,设置或修改对象的某个状态却不返回值的方法。
+若我们让这些方法返回this,就可以启用级联。级联可以产生出具备很强表现力的接口。
 ### 14 Curry 套用
-函数也是值，所以我们可以去操作函数值。套用允许我们将函数与传递给它的参数相结合去产生一个新的函数
+函数也是值,所以我们可以去操作函数值。套用允许我们将函数与传递给它的参数相结合去产生一个新的函数
 Function.prototype.method = function(name,func){if(!this.prototype[name]) this.prototype[name]=func;}//给方法类型增加method方法
 Function.method('curry', function(){
     var slice = Array.prototype.slice, args = slice.apply(arguments), that = this;//this arguments value is 1
@@ -547,11 +565,11 @@ var add = function (a,b){return a+b} ；
 var add2 = add.curry(1)；
 add2(5)；//6
 ### 15 Memoization 记忆
-函数可以用对象去记住向前操作的结果，从而避免无谓的运算，这种优化被称为记忆。Javascript中多用对象和数组实现这种优化
+函数可以用对象去记住向前操作的结果,从而避免无谓的运算,这种优化被称为记忆。Javascript中多用对象和数组实现这种优化
 var memoizer = function(memo,fundamental){
 	var shell = function(n){
-        var result = memo[n];//memo作为入参，在单次调用时保持一致
-        if(typeof result !== 'number'){ //如果memo[n]未被缓存，result = undefined
+        var result = memo[n];//memo作为入参,在单次调用时保持一致
+        if(typeof result !== 'number'){ //如果memo[n]未被缓存,result = undefined
 			result = fundamental(shell,n); memo[n]=result; 
 		} 
 		return result;
@@ -564,20 +582,21 @@ var factorial = memoizer([1,1],function(shell,n){return n*shell(n-1);})
 
 
 ## 5 Inheritance 继承 
-继承提供两个重要作用，1，他是代码重用的一种形式；2，包括了一套类型系统的规范。
-Javascript是弱类型语言（动态弱类型），不需要类型转换。对象的起源无关紧要，对对象来说，重要的是他能做什么。
-Javascript是基于原型的语言，对象可直接从其他对象继承，这提供更为丰富的代码重用模式。可以模拟基于类的模式以及其他的模式。
+继承提供两个重要作用,1,他是代码重用的一种形式；2,包括了一套类型系统的规范。
+Javascript是弱类型语言(动态弱类型),不需要类型转换。对象的起源无关紧要,对对象来说,重要的是他能做什么。
+Javascript是基于原型的语言,对象可直接从其他对象继承,这提供更为丰富的代码重用模式。可以模拟基于类的模式以及其他的模式。
 ### 1,Pseudoclassical 伪类
-ECMAScript2015（ES6）中引入的javascript类实质是基于原型的继承的语法糖
-类实际上是个特殊的函数，包括：类表达式和类声明。类的首字母大写
-类声明：class关键字。函数声明会提升但类声明不会，所以必须先声明类，然后才能访问它
+ECMAScript2015(ES6)中引入的javascript类实质是基于原型的继承的语法糖
+类实际上是个特殊的函数,包括：类表达式和类声明。类的首字母大写
+#### 1。1
+类声明：class关键字。函数声明会提升但类声明不会,所以必须先声明类,然后才能访问它
 class Rectangle {
   constructor(height, width) {
     this.height = height;
     this.width = width;
   }
 }
-类表达式：是定义类的另一种方式，主要包括命名和匿名
+类表达式：是定义类的另一种方式,主要包括命名和匿名
 /* 匿名类 */ 
 let Rectangle = class {
   constructor(height, width) {
@@ -592,9 +611,9 @@ let Rectangle = class Rectangle {
     this.width = width;
   }
 };
-类体和方法定义
-类声明和类表达式的主体都执行在严格模式下。比如，构造函数，静态方法，原型方法，getter和setter都在严格模式下执行
-constructor方法是一个特殊的方法，其用于创建和初始化使用class创建的一个对象。一个类只能拥有一个名为 “constructor”的特殊方法。 
+#### 1。2 类体和方法定义
+类声明和类表达式的主体都执行在严格模式下。比如,构造函数,静态方法,原型方法,getter和setter都在严格模式下执行
+constructor方法是一个特殊的方法,其用于创建和初始化使用class创建的一个对象。一个类只能拥有一个名为 “constructor”的特殊方法。 
 一个构造函数可以使用 super 关键字来调用一个父类的构造函数。
 class Rectangle {
   constructor(height, width) {
@@ -604,12 +623,188 @@ class Rectangle {
     get area(){return this.calcArea()}
     calcArea(){return this.height * this.width}
 }
-const square = new Rectangle(10, 10);
+//原型链：(10, 10) -→ Rectangle.prototype ----> Object.prototype ----> null
+const square = new Rectangle(10, 10);//如果不写new,就是一个普通函数,返回undefined
 console.log(square.area);//100
-静态方法
-static关键字定义类的静态方法，调用静态方法不需要实例化类，同时类实例不能调用静态方法
+#### 1。3 属性私有,共享方法的对象
+Class.prototype指向实例化的原型对象,Class.constructor指向Class函数自身
+原型对象实例的__proto__可以查看Class函数
+'use strict';
+function Cat(name) {
+    this.name = name;
+}
+Cat.prototype.say = function (){
+    return 'Hello, '+this.name+'!';
+}   
+// 测试:
+var kitty = new Cat('Kitty');
+var doraemon = new Cat('哆啦A梦');
+if (kitty && kitty.name === 'Kitty' && kitty.say && typeof kitty.say === 'function' && kitty.say() === 'Hello, Kitty!' && kitty.say === doraemon.say) {
+    console.log('测试通过!');
+} else {
+    console.log('测试失败!');
+}
+#### 1。4 原型继承
+借助中间函数实现原型链继承,并在新的构造函数的原型上定义新方法
+function inherits(Child, Parent) {
+    var F = function () {};
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.prototype.constructor = Child;
+}
+function Student(props) {
+    this.name = props.name || 'Unnamed';
+}
+Student.prototype.hello = function () {
+    console。log('Hello, ' + this.name + '!');
+}
+function PrimaryStudent(props) {
+    Student.call(this, props);
+    this.grade = props.grade || 1;
+}
+// 实现原型继承链:
+inherits(PrimaryStudent, Student);
+// 绑定其他方法到PrimaryStudent原型:
+PrimaryStudent.prototype.getGrade = function () {
+    return this.grade;
+};
+s.__proto__ === PrimaryStudent.prototype；//true
+s.__proto__.__proto__ === Student.prototype；//true
+var t = new PrimaryStudent({name:'jack',grade:12})
+t.hello()//Hello, jack!
+t.getGrade()//12
+#### 1。5 class继承
+"use strict";
+class Polygon {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+}
+class Square extends Polygon {
+  constructor(sideLength) {
+    super(sideLength, sideLength);//Polygon。constructor(height, width)
+  }
+  get area() {
+    return this.height * this.width;
+  }
+  set sideLength(newLength) {
+    this.height = newLength;
+    this.width = newLength;
+  }
+  toString (){
+    console.log('this.height:'+this.height+'; this.width:'+this.width);
+  }
+}
+var square = new Square(3);
+square.sideLength = 5
+square.toString()// this.height:5; this.width:5
+#### 1。5 静态方法
+static关键字定义类的静态方法,调用静态方法不需要实例化类,同时类实例不能调用静态方法
 class Point{
 	constructor(x,y){this.x=x;this.y=y;}
 	static distance(a,b){return Math.hypot(a.x-b.x,a.y-b.y); } 
 } 
 Point.distance(new Point(1,1),new Point(4,5));
+#### 1。6 Object.create
+ECMAScript 5 中引入了一个新方法：Object.create()。可以调用这个方法来创建一个新对象
+新对象的原型就是调用 create 方法时传入的第一个参数
+var a = {a: 1}; 
+// a ---> Object.prototype ---> null
+a.__proto__ === Object.prototype//true
+var b = Object.create(a);
+// b ---> a ---> Object.prototype ---> null
+console.log(b.a); // 1 (继承而来)
+b.__proto__.__proto__=== Object.prototype//true
+var c = Object.create(b);
+// c ---> b ---> a ---> Object.prototype ---> null
+var d = Object.create(null);
+// d ---> null
+console.log(d.hasOwnProperty); // undefined, 因为d没有继承Object.prototype
+### 2 Object Specifiers 对象说明符
+构造器参数很多时，通过指定实参的名称,可以实现乱序排列
+形参新的特性：默认参数,剩余参数
+剩余参数语法允许我们将一个不定数量的参数表示为一个数组。
+var func = function(a,b=a+1,c=2,...args){
+        console.log('a:'+a+'; b:'+b+'; c:'+c+'; args.length:'+args.length);
+}
+func(1,...[234,12,34,3]) //a:1; b:234; c:12; args.length:2
+### 3 Prototype 原型
+原型模式中会摒弃类的概念，转而专注于对象，一个对象可以继承一个旧对象的属性。
+通过Object.create实现差异化继承
+var Mammal = {
+	name:"mammal",
+	says: function(){ return this.name + this.saying || '';}
+}
+var cat = Object.create(Mammal) 
+cat.saying = 'meow' 
+cat.name = 'cat' 
+cat.says() //"catmeow"
+### 4 Functional 函数化
+通过模型模式实现属性私有。感觉有点过时
+var mamal = function(spec){
+	var that = {};
+	that.getNmae = function (){return spec.name;}
+	that.says = function (){ return spec.saying || '';}
+	return that;
+}
+
+var cat = mamal({name:'cat',saying:'miaow'})
+cat.says() // "miaow"
+var dog = mamal({name:'dog',saying:'wowang'})
+dog.getNmae()// "dog"
+### 5 Parts 部件
+通过从一套部件中组合出对象，代码复用的一种方式。
+构造能添加简单事件处理特性到任何对象的函数，它包括on,fire,注册表对象
+var eventutilize = function (that) {
+	var registry = {};
+	that.fire = function (event){
+		var array,func,handler,i,type = typeof event === 'string'?event:event.type;
+		if(registry.hasOwnProperty(type)){
+			array = registry[type];
+			for(i=0;i<array.length;i++){
+                handler = array[i];
+                func = handler.method;
+                if(typeof func === 'string')
+                    func = this[func];
+                func.apply(this,hanler.parameters || [event]);
+            }
+		}
+        return this;
+	}
+    that.on =function(type,method,parameters){
+        var handler = {
+            method: method,
+            parameters:parameters
+        }
+        if(registry.hasOwnProperty(type)){
+            registry[type].push(handler)
+        }else{
+            registry[type] = [handler];
+        }
+        return this;
+    }
+    return that;
+}
+eventutilize(new Object())//{fire: ƒ, on: ƒ}
+
+
+## 6 Arrays 数组
+数组是一段线性分配的内存，通过整数计算偏移去访问其中的元素。不过javascript中没有数组数据结构，
+而是提供一种拥有数组特性的对象。javascript中数组的下标是字符串，比真正的数组结构慢，但也不再限制数组元素的数据类型，同时提供了数组字面量格式。
+### 1 Array Literals 数组字面量
+
+
+## 8 Methods 方法
+### Array
+### Number
+### Function
+### Object
+
+### Regexp
+### String
+## 9 Style 代码风格 
+## 10 Beautiful Features 优美的特性
+### 函数是头等对象
+### 基于原型继承的动态对象
+### 对象字面量和数组字面量
