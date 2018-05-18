@@ -56,7 +56,7 @@ AS
 **	Marco Cao    2017/05/09		1=1  AND not (((DATETESTED) is null or length(DATETESTED) = 0))
 **	Robin Lu    2017/09/18		add new column:Comment - Previous Event
 **	Ben Song     2018/04/24     US284403    VKC: Issue with "# events" column
-**	Ben Song     2018/05/18     32733:VKC:New columns: Previous event's Next Maint and Next Test Date
+**	Ben Song     2018/05/17     32733:VKC:New columns: Previous event's Next Maint and Next Test Date
 
 SELECT UNIQUEKEY,TENANTKEY..., --ALL Special Columns
 FROM RELIEFD r INNER JOIN (
@@ -1014,12 +1014,6 @@ BEGIN
   SelectedColumns1 :=  REPLACE(SelectedColumns1, 'r.PRENEXTTESTDATE', PRE_NEXT_TESTDATE_COL);
   SelectedColumns1 :=  REPLACE(SelectedColumns1, 'r.MTHSGAPPREEVTNXTMAINTEST', MTHSGAP_PREEVTNXTMAIN_TEST_COL);
   SelectedColumns1 :=  REPLACE(SelectedColumns1, 'r.MTHSGAPPREEVTNXTTESTTEST', MTHSGAP_PREEVTNXTTEST_TEST_COL);
-
-	SelectedColumns1 := REPLACE(SelectedColumns1, 'r.PRENEXTMAINDATE', PRE_NEXT_MAINDATE_COL);
-	SelectedColumns1 := REPLACE(SelectedColumns1, 'r.PRENEXTTESTDATE', PRE_NEXT_TESTDATE_COL);
-	SelectedColumns1 := REPLACE(SelectedColumns1, 'r.MTHSGAPPREEVTNXTMAINTEST', MTHSGAP_PREEVTNXTMAIN_TEST_COL);
-	SelectedColumns1 := REPLACE(SelectedColumns1, 'r.MTHSGAPPREEVTNXTTESTTEST', MTHSGAP_PREEVTNXTTEST_TEST_COL);
-  
 
 	SelectedColumns1 := REPLACE(SelectedColumns1, ',,', ',');
 	
