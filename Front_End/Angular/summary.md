@@ -17,7 +17,7 @@ Creat
   ],
 你知道了把组件声明到 AppModule 是很重要的，并认识到 CLI 会自动帮你声明它。
   @NgModule({ declarations: [AppComponent,HerosComponent],。。。})
-
+ 
 
 Display
 英雄指南应用在一个主从视图中显示了英雄列表。
