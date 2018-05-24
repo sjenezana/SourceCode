@@ -1,1 +1,49 @@
-strUserKey+','+ strRVKeys+','+ strCVKeys+','+ strLVKeys+','+ strMOVKeys+','+ booShowRV+','+ booShowCV+','+ booShowLV+','+ booShowMOV+','+ booShowInGrid+','+ strGridDataSource+','+ strUsingField+','+ strDateFrom+','+ strDateTo+','+ strLimitDueType+','+ strSelectedDates+','+ strSelectedDateType+','+ strFilterClause
+US281935  PARTTOREPLACECOUNT
+
+UFGETEQUIPTORPLPARTCNT
+COMMENTPREVIOUSEVENTCOL := 'TO_CHAR(UFGETEQUIPPREFIELD(R.UNIQUEKEY,0,''A_COMMENT'')) AS COMMENTPREVIOUSEVENT';
+PRE_NEXT_MAINDATE_COL := 'TO_CHAR(UFGETEQUIPPREFIELD(R.UNIQUEKEY,0,''NEXTMAINDATE'')) AS PRENEXTMAINDATE';
+PRE_NEXT_TESTDATE_COL := 'TO_CHAR(UFGETEQUIPPREFIELD(R.UNIQUEKEY,0,''NEXTTESTDATE'')) AS PRENEXTTESTDATE';
+MTHSGAP_PREEVTNXTMAIN_TEST_COL := 'CEIL(DATEDIFF(''DAY'',TODATE(DATETESTED),TODATE(UFGETEQUIPPREFIELD(R.UNIQUEKEY,0,''NEXTMAINDATE'')))*10000/304375 )AS MTHSGAPPREEVTNXTMAINTEST';
+MTHSGAP_PREEVTNXTTEST_TEST_COL := 'CEIL(DATEDIFF(''DAY'',TODATE(DATETESTED),TODATE(UFGETEQUIPPREFIELD(R.UNIQUEKEY,0,''NEXTTESTDATE'')))*10000/304375) AS MTHSGAPPREEVTNXTTESTTEST';
+
+
+not in gridfield
+ '"Local" Comment',
+
+
+not in template
+ 'As Rec CFG 1', 
+ 'As Rec CFG 2', 
+ 'As Rec CFG 3', 
+ 'As Rec CFG 4', 
+ 'Electrical Cover/AR', 
+ 'Overall Ratio (OAR)-Rec']
+
+
+
+'Scheduled Maintenance', 
+'Unscheduled Maintenance', 
+'Pretest Performed',
+ 'Pretest Not Performed', 
+ '"Local" Comment',
+ 'INSP1', 
+ 'INSP2', 
+ 'INSP3',
+ 'INSP4', 
+ 'INSP5', 
+ 'INSP6', 
+ 'INSP7', 
+ 'INSP8', 
+ 'INSP9', 
+ 'INSP10', 
+ 'INSP11', 
+ 'INSP12', 
+ 'QCE5', 
+ 'QCE6', 
+ 'As Rec CFG 1', 
+ 'As Rec CFG 2', 
+ 'As Rec CFG 3', 
+ 'As Rec CFG 4', 
+ 'Electrical Cover/AR', 
+ 'Overall Ratio (OAR)-Rec'

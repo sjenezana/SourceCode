@@ -24,6 +24,7 @@
     "angular2-in-memory-web-api": "0.0.21",
     "core-js": "^2.5.4",
     "npm": "^6.0.1",
+    "package.json": "^2.0.1",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

@@ -1,9 +1,10 @@
 declare
 v_tenantkey VARCHAR2(40);
+v_count number;
 begin
   declare
-	CURSOR cur_emp IS 
-	select uniquekey from tenant t where	 exists (select * from  TEMPLATES tem where tem.ISDEFAULT = 'T' and tem.tenantkey=t.uniquekey);
+		  CURSOR cur_emp IS 
+		  select uniquekey from tenant;
       row_emp cur_emp%ROWTYPE;
       begin
         OPEN cur_emp;
@@ -11,63 +12,44 @@ begin
 			  WHILE cur_emp%FOUND
 			  LOOP
         begin
-          v_tenantkey := row_emp.uniquekey;
+          v_tenantkey := row_emp.uniquekey; 
 
-          insert into griddefaultfield (tenantkey,griddatasource,querytype,datatable,fieldname,displayname,fieldnum,seqno,show,value,createdate,editdate,fieldtype) 
-          select v_tenantkey tenantkey,griddatasource,querytype,datatable,fieldname,displayname,fieldnum,seqno,show,value,createdate,editdate,fieldtype from (
-          select distinct  griddatasource,querytype,'NA' datatable,'PRENEXTMAINDATE' fieldname,displayname || ' - Previous Event' displayname,
-          119 fieldnum,0 seqno,"SHOW","VALUE",'2018/05/16' createdate,'2018/05/16' editdate,fieldtype 
-            from griddefaultfield g   where fieldname = 'NEXTMAINDATE' and griddatasource in ('uspGetCVList','uspGetLVList','uspGetMOVList','uspGetRVList')
-          union all
-          select  distinct  griddatasource,querytype,'NA' datatable,'PRENEXTTESTDATE' fieldname,displayname || ' - Previous Event' displayname,
-          124 fieldnum,0 seqno,"SHOW","VALUE",'2018/05/16' createdate,'2018/05/16' editdate,fieldtype 
-            from griddefaultfield g   where fieldname = 'NEXTTESTDATE' and griddatasource in ('uspGetCVList','uspGetLVList','uspGetMOVList','uspGetRVList')
-          );
-          
-          insert into griddefaultfield (tenantkey,griddatasource,querytype,datatable,fieldname,displayname,fieldnum,seqno,show,value,createdate,editdate,fieldtype) 
-          select v_tenantkey tenantkey,griddatasource,querytype,datatable,fieldname,displayname,fieldnum,seqno,show,value,createdate,editdate,fieldtype from (
-          select  distinct  griddatasource,querytype,'NA' datatable,'MTHSGAPPREEVTNXTMAINTEST' fieldname,'# Mths Gap Date Tested - Prev Next Maint' displayname, 
-          null fieldnum,0 seqno,"SHOW","VALUE",'2018/05/16' createdate,'2018/05/16' editdate,'I' fieldtype 
-            from griddefaultfield g   where fieldname = 'MONTHSGAP' and griddatasource in ('uspGetCVList','uspGetLVList','uspGetMOVList','uspGetRVList')
-          union
-          select  distinct  griddatasource,querytype,'NA' datatable,'MTHSGAPPREEVTNXTTESTTEST' fieldname,'# Mths Gap Date Tested - Prev Next Test' displayname, 
-          null fieldnum,0 seqno,"SHOW","VALUE",'2018/05/16' createdate,'2018/05/16' editdate,'I' fieldtype
-            from griddefaultfield g   where fieldname = 'MONTHSGAP' and griddatasource in ('uspGetCVList','uspGetLVList','uspGetMOVList','uspGetRVList')  
-          );
-          
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'HYDROSTAMPVERIF','Hydro Stamp Verified',1967,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='HYDROSTAMPVERIF' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'PARTSUNIV2','Parts U2',1968,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='PARTSUNIV2' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'FINALTESTUNIV91','FT U91',1969,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='FINALTESTUNIV91' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'FINALTESTUNIV92','FT U92',1970,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='FINALTESTUNIV92' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'QCUNIV91','QC U91',1971,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='QCUNIV91' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'QCUNIV92','QC U92',1972,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='QCUNIV92' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'SHIPUNIV91','Ship U91',1973,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='SHIPUNIV91' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+
+                Insert into GRIDDEFAULTFIELD (TENANTKEY,GRIDDATASOURCE,QUERYTYPE,DATATABLE,FIELDNAME,DISPLAYNAME,FIELDNUM,SEQNO,"SHOW", "VALUE",CREATEDATE,EDITDATE,FIELDTYPE) 
+                SELECT  v_tenantkey, 'uspGetRVList','SELECT','ReliefD', 'SHIPUNIV92','Ship U92',1974,0,'T','150',TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),TO_CHAR (CURRENT_TIMESTAMP, 'YYYY/MM/DD'),null FROM dual
+                where not exists(SELECT * FROM GRIDDEFAULTFIELD WHERE FIELDNAME='SHIPUNIV92' AND FIELDNUM=1966 AND GRIDDATASOURCE='uspGetRVList');
+ 
         end;
         FETCH cur_emp INTO row_emp;
 			  END LOOP;
 			  close cur_emp;
       end;
+       
 end;
-
-ufGetEquipPreField
-
-uspGetGridField
-ufFormatLowerColumns
-uspGetGeneralSummary
-uspGetKeyListByFitlerInGrid
-uspPrepareGridFieldsNoCust
-
-uspGetRVListByUser
-uspGetCVListByUser
-uspGetLVListByUser
-uspGetLVListByUsercount
-uspGetMOVListByUser
-uspGetMOVListByUsercount
-
-
-
-
-
-, 'PRENEXTMAINDATE', 'PRENEXTTESTDATE', 'MTHSGAPPREEVTNXTMAINTEST','MTHSGAPPREEVTNXTTESTTEST'
-
-
- 
-select reliefd.A_COMMENT,reliefd.* from reliefd where tagnumber = 'A' and A_COMMENT is not null order by tenantkey
-
-
-'LAG(to_char(A_COMMENT),1) over  (order by equipmentkey, DECODE(ISDATE(DATETESTED), 0, DECODE(ISDATE(DATERECEIVED),0, 
-SUBSTR(DATECREATE, 1, 4)||''/''|| SUBSTR(DATECREATE, 5, 2) ||''/''|| SUBSTR(DATECREATE, 7, 2), DATERECEIVED), DATETESTED) 
-,UNIQUEKEY) AS COMMENTPREVIOUSEVENT';
