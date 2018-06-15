@@ -36,4 +36,7 @@
  addLoadEvent(displayAbbreviations);
 
 
- 
+ fucntion displayCitations(){
+  
+
+ }
