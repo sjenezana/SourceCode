@@ -32,7 +32,7 @@ javascript嵌入到html中的方式：3种
 
 chapter 3：DOM Document Object Model 文档对象模型
 1. 一份文档就是一棵节点树
-2. 节点分为不同的类型：共12种，常用，**元素节点0，属性节点1，文本节点2**
+2. 节点分为不同的类型：共12种，常用，**元素节点1，属性节点2，文本节点3,注释节点8**
 3. getElementId：对应文档里的一个特定的元素节点
 4. getElementByTagName和getElementByclassName将返回一个对象数组，分别对应文档里的一组元素节点
 5. 每个节点都是一个对象
@@ -60,7 +60,7 @@ childNodes 标准的，它返回指定元素的子元素集合，包括HTML节�
     let bodyElement = document.getElementsByTagName("body")[0];
     console.log(bodyElement.childNodes.length);
 nodeType 判断是哪种类型的节点
-    **是元素节点，2是属性节点，3是文本节点**
+    **1是元素节点，2是属性节点，3是文本节点**
 nodeValue
     imgdesc.firstChild.nodeValue = e.getAttribute("title");
 firstChild/lastChild
@@ -166,14 +166,88 @@ Ajax可以只更新页面中的一部分，优势就是对页面的请求以异�
 核心是XmlHttpRequest对象，充当着浏览器中脚本和服务器中间人的角色
 
 chapter 8：充实文档的内容
-    不要用javascript添加内容到网页上，因为不支持javascript的用户将看不到重要内容
-        渐进增强：从最核心的部分开始，也就是从内容开始。应该根据内容使用标记实现良好的结构。
-        平稳退化：渐进增强的实现必然支持平稳退化。按照渐进增强的原则去充实内容，那些缺乏css和dom支持的访问者仍可以访问到核心内容。
-    display属性，inline：横向排列；block：独占一行；none：不显示
-    dom技术为网页添加的实用小功能，最终可以用另一种结构呈现核心内容
-        得到隐藏在属性里的信息
-        创建标记封装这些信息
-        将标记插入到文档中
+1. 不要用javascript添加内容到网页上，因为不支持javascript的用户将看不到重要内容
+    渐进增强：从最核心的部分开始，也就是从内容开始。应该根据内容使用标记实现良好的结构。
+    平稳退化：渐进增强的实现必然支持平稳退化。按照渐进增强的原则去充实内容，那些缺乏css和dom支持的访问者仍可以访问到核心内容。
+        display属性，inline：横向排列；block：独占一行；none：不显示
+2. dom技术为网页添加的实用小功能，最终可以用另一种结构呈现核心内容
+    得到隐藏在属性里的信息
+    创建标记封装这些信息
+    将标记插入到文档中
     基本思路：用js函数先把文档中的现有信息提炼出来，然后将信息以清晰有意义的方式重新插入到文档中。
-    
+3. DOM方法
+    **检索信息：getElementById, getElementsByTagName, getAttribute**
+    **添加信息: createElement, createTextNode, appendChild, insertBefore, setAttribute**
+
+chapter 9: CSS-DOM
+网页：
+    结构层：HTML这类的标记语言创建，标签描述网页的语义    
+        <p>this is text desc</p> 
+    表示层：CSS来完成，描述页面如何呈现
+        p { color: red;}
+    行为层：javascript和DOM主宰的领域，负责如何响应事件
+        let paras = document.getElementsByTagName('p');
+        for(let i =0; i< paras.length;i++) paras[i].onclick = function(){alert("clicked.");}
+style属性
+1. document.getElementById('id').style 这是一个对象
+2. 获取属性: 
+    color element.style.color
+    属性中有连字符*-*的,javascript会解释为减号,所以要去掉并使用驼峰命名法
+    font-family element.style.fontFamily
+3. style属性只能返回内嵌样式,就是紧跟在html标签内部style中的样式.
+    但是用DOM只能设置内嵌样式,可以用style属性获取到
+4. 设置样式: document.getElementById('id').style.color = "black";
+5. 使用场景: 
+    1. 根据元素在DOM树里的位置设置样式
+        let headers = document.getElementsByTagName("h1");
+        for (let i=0; i<headers.length; i++) {
+            let elem = getNextElement(headers[i].nextSibling);
+            elem.style.color = "red";
+        }  
+        function getNextElement(node) {
+            if(node.nodeType == 1) {
+                return node;
+            }
+            if (node.nextSibling) {
+                return getNextElement(node.nextSibling);
+            }
+            return null;
+        }
+    2. 遍历节点集合设置样式, table标签中设置奇偶行的样式
+        let tab = document.getElementsByTagName('table')[0];
+        let rows = tab.getElementsByTagName('tr');
+        let odd = false;
+        for (let i =0; i< rows.length; i++){
+            if(odd == true){
+            rows[i].style.color = "orange";
+            odd = false;
+        }else{
+            odd = true;
+        }}
+    3. 事件发生时设置元素样式
+        let rows = document.getElementsByTagName('tr');
+        for (let i=0;i<rows.length;i++){
+        rows[i].onmouseover = function(){this.style.fontWeight = "bold";}
+        rows[i].onmouseout = function(){this.style.fontWeight = "normal";}
+        }
+classname属性
+    与其用DOM直接改变某个元素的样式,不如通过javascript更新元素的class属性
+    odd { color: red; }
+    function addClass(ele, value){
+        if(!ele.className) { ele.className = value;}
+        else {ele.className = ele.className + " " + value;	 }
+    }
+    let tab = document.getElementsByTagName('table')[0];
+    let rows = tab.getElementsByTagName('tr');
+    let odd = false;
+    for (let i =0; i< rows.length; i++){
+        if(odd == true){
+        addClass(rows[i],"odd");
+        odd = false;
+    }else{
+        odd = true;
+    }}
+
+chapter10 javascript实现动画
+动画：元素的位置随时间而不断的发生变化
 
