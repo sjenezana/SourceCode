@@ -1,52 +1,18 @@
-DECLARE
-  IN_USERKEY VARCHAR2(200);
-  IN_REPAIRENTRYKEY VARCHAR2(200);
-  IN_EQUIPTRACKKEY VARCHAR2(200);
-  IN_GRIDDATASOURCE VARCHAR2(200);
-  IN_SELECTEDKEYLIST CLOB;
-  IN_DATASOURCETYPE NUMBER;
-  IN_PARTSREPLACED CHAR(200);
-  IN_PARTSTOREPLACE CHAR(200);
-  IN_PARTSONORDER CHAR(200);
-  IN_PARTSWORKRECOMMENDATION CHAR(200);
-  IN_PARTSFILTER CHAR(200);
-  IN_EQUIPTYPE NUMBER;
-  IN_FILTERCLAUSE VARCHAR2(200);
-  IN_FORMATNULLVALUE CHAR(200);
-  IN_FORREPORT CHAR(200);
-BEGIN
-  IN_USERKEY := 'AB5DBB3289A348AE87B415498B02749C';
-  IN_REPAIRENTRYKEY := '20180522090857066415';
-  IN_EQUIPTRACKKEY := '20170907142958014077';
-  IN_GRIDDATASOURCE := NULL;
-  IN_SELECTEDKEYLIST := NULL;
-  IN_DATASOURCETYPE := 0;
-  IN_PARTSREPLACED := 'False';
-  IN_PARTSTOREPLACE := 'False';
-  IN_PARTSONORDER := 'False';
-  IN_PARTSWORKRECOMMENDATION := 'False';
-  IN_PARTSFILTER := 'False';
-  IN_EQUIPTYPE := 0;
-  IN_FILTERCLAUSE := '';
-  IN_FORMATNULLVALUE := 'True';
-  IN_FORREPORT := 'False';
+	IF (IN_PartsToReplace = 'T') THEN
+		IF(LimitSQL IS NOT NULL) THEN
+			LimitSQL := LimitSQL || IN_ANDOR || ' EXISTS (SELECT ' ||REPLACE(REPLACE(PartToPlaceCountChrs,'r.','RELIEFD.'),'COUNT(*)','1') || ' FROM DUAL )';
+		ELSE
+			LimitSQL := ' EXISTS (SELECT ' ||REPLACE(REPLACE(PartToPlaceCountChrs,'r.','RELIEFD.'),'COUNT(*)','1') || ' FROM DUAL )';
+		END IF;
+	END IF;
 
-  USPGETPARTS_TEST(
-    IN_USERKEY => IN_USERKEY,
-    IN_REPAIRENTRYKEY => IN_REPAIRENTRYKEY,
-    IN_EQUIPTRACKKEY => IN_EQUIPTRACKKEY,
-    IN_GRIDDATASOURCE => IN_GRIDDATASOURCE,
-    IN_SELECTEDKEYLIST => IN_SELECTEDKEYLIST,
-    IN_DATASOURCETYPE => IN_DATASOURCETYPE,
-    IN_PARTSREPLACED => IN_PARTSREPLACED,
-    IN_PARTSTOREPLACE => IN_PARTSTOREPLACE,
-    IN_PARTSONORDER => IN_PARTSONORDER,
-    IN_PARTSWORKRECOMMENDATION => IN_PARTSWORKRECOMMENDATION,
-    IN_PARTSFILTER => IN_PARTSFILTER,
-    IN_EQUIPTYPE => IN_EQUIPTYPE,
-    IN_FILTERCLAUSE => IN_FILTERCLAUSE,
-    IN_FORMATNULLVALUE => IN_FORMATNULLVALUE,
-    IN_FORREPORT => IN_FORREPORT
-  );
---rollback; 
-END;
+
+
+	These implicit LOBs come with a number of restrictions beyond those seen with conventional LOBs.
+VARCHAR2 and NVARCHAR2 columns with a declared size greater than 4000 bytes are considered extended data types.
+RAW columns with a declared size greater than 2000 bytes are considered extended data types.
+All extended data types (see the previous two definitions) are stored out-of-line in LOB segments.
+You have no manual control over these LOB segments. Their management is totally internal.
+The LOB segments will always be stored in the same tablespace as the associated table.
+LOBs stored in Automatic Segment Space Management (ASSM) tablespaces are stored as SecureFiles. Those stored in non-ASSM tablespaces are stored as BasicFiles.
+All normal LOB restrictions apply.
