@@ -86,3 +86,17 @@ header nav a.here:active {
     color: #eef;
     background-color: #799;
 }
+
+tr.odd td {
+    color: #223;
+    background-color: #ec8;
+}
+
+tr.highlight td {
+    color: #223;
+    background-color: #cba;
+}
+
+input.placeholder {
+    color: grey;
+}

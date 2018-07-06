@@ -107,3 +107,41 @@ article img {
     left: 0;
     z-index: 99;
 }
+
+#imagegallery li {
+    display: inline;
+}
+
+td {
+    padding: .5em 3em;
+}
+
+th {
+    color: #edc;
+    background-color: #455;
+}
+
+tr td {
+    color: #223;
+    background-color: #eb6;
+}
+
+dl {
+    overflow: hidden;
+}
+
+dt {
+    float: left;
+}
+
+dd {
+    float: left;
+}
+
+label {
+    display: block;
+}
+
+fieldset {
+    border: 0;
+}
