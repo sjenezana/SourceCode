@@ -440,3 +440,48 @@ function prepareForms() {
     }
 }
 addLoadEvent(prepareForms);
+
+
+
+
+function getActiveImgIndex(element, arrow) {
+    if(!element||!arrow) return;
+    var index = 0;
+    var beforeIndex = 0;
+    if(element.indexOf('L') > 0){
+        beforeIndex = _leftImagesIndex;
+        if (arrow == 'pre') {
+            if (_leftImagesIndex == 0) _leftImagesIndex = _leftImages.length - 1;
+            else _leftImagesIndex--;
+        } else {
+            if (_leftImagesIndex == _leftImages.length - 1) _leftImagesIndex = 0;
+            else _leftImagesIndex++;
+        } 
+        index = _leftImagesIndex;
+    } else{
+        beforeIndex = _rightImagesIndex;
+        if (arrow == 'pre') {
+            if (_rightImagesIndex == 0) _rightImagesIndex = _rightImages.length - 1;
+            else _rightImagesIndex--;
+        } else {
+            if (_rightImagesIndex == _rightImages.length - 1) _rightImagesIndex = 0;
+            else _rightImagesIndex++;
+        } 
+        index = _rightImagesIndex;
+    }
+
+    var gallerialList = document.getElementById(element); 
+    var gallerialThumbnailsContainer = gallerialList.getElementsByClassName('galleria-thumbnails')[0];
+    if (!element || !document.getElementById(element)) return;
+    if (!gallerialThumbnailsContainer) return;
+    var gallerialThumbnails = gallerialThumbnailsContainer.getElementsByClassName('galleria-image');
+    if (!gallerialThumbnails) return; 
+    var divGalleriaImg  = gallerialThumbnails[index];
+    divGalleriaImg.className = divGalleriaImg.className.replace(' active', '');
+    divGalleriaImg.getElementsByTagName('img')[0].style.opacity = 0.4; 
+    var beforeDivGalleriaImg  = gallerialThumbnails[beforeIndex]; 
+    beforeDivGalleriaImg.className = beforeDivGalleriaImg.className + ' active';
+    beforeDivGalleriaImg.getElementsByTagName('img')[0].style.opacity = 1;
+
+    return ;
+}
