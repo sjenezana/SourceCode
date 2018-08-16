@@ -1,6 +1,2 @@
-
-
-
-
-
-
+http://api.fanyi.baidu.com:80//api/trans/vip/translate?appid=20180816000194959&q=CVs%3A%20Alternate%20Layout%20of%20Positioner%20/%20Actuator%20/%20Transducer%20Area&from=en&to=zh&salt=49255&sign=0e5cb1d54eb989
+c19d856fa310d72950
