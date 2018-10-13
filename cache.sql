@@ -1,53 +1,327 @@
-#/usr/bin/env python
-#coding=utf8
- 
-import http.client
-import hashlib 
-import random
-import openpyxl
-import json
+update GRIDDEFAULTFIELD@to_rds 
+set fieldnum=1043
+where fieldname = 'AR_UNIV1'
+AND DATATABLE='CV' AND QUERYTYPE='SELECT';
 
-print('translate begin...')
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1815
+ WHERE fieldname='EXTRAE'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
 
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 852
+ WHERE fieldname='CDMEAS20'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
 
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 851
+ WHERE fieldname='CDMEAS19'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
 
-def translateBaidu(content):
-
-    appid = '20180816000194959'
-    secretKey = 'lWzwUiWmhRORknf68FCT'
-    httpClient = None
-    myurl = '/api/trans/vip/translate'
-    q = content
-    fromLang = 'en' # 源语言
-    toLang = 'zh'   # 翻译后的语言
-    salt = random.randint(32768, 65536)
-    sign = str(appid) + q + str(salt) + secretKey
- 
-    sign = hashlib.md5(sign.encode("utf-8")).hexdigest()
-    myurl = myurl + '?appid=' + appid + '&q=' + urllib.parse.quote(q) + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(salt) + '&sign=' + sign
- 
-    try:
-        httpClient = http.client.HTTPConnection('api.fanyi.baidu.com')
-        httpClient.request('GET', myurl)
-    
-        #response是HTTPResponse对象
-        response = httpClient.getresponse()  
-        jsonResponse = response.read().decode("utf-8")# 获得返回的结果，结果为json格式
-        print(jsonResponse)
-        js = json.loads(jsonResponse)  # 将json格式的结果转换字典结构
-        dst = str(js["trans_result"][0]["dst"])  # 取得翻译后的文本结果 
-    except Exception as e:
-        print(e)
-    finally:
-        if httpClient:
-            httpClient.close()
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 850
+ WHERE fieldname='CDMEAS18'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
 
 
-wb = openpyxl.load_workbook('c:\_Work\chinesetranslation.xlsx')
-sheet = wb.get_sheet_by_name('Sheet1') 
-fromLang = 'en'
-toLang = 'zh'
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 849
+ WHERE fieldname='CDMEAS17'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
 
-for i in range (121,125,1 ):
-    print(sheet.cell(row=i, column=3).value)
-    print(i, translateBaidu(sheet.cell(row=i, column=3).value))
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 848
+ WHERE fieldname='CDMEAS16'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 847
+ WHERE fieldname='CDMEAS15'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 846
+ WHERE fieldname='CDMEAS14'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 845
+ WHERE fieldname='CDMEAS13'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 844
+ WHERE fieldname='CDMEAS12'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 843
+ WHERE fieldname='CDMEAS11'
+ AND DATATABLE='CV' AND QUERYTYPE='SELECT';
+
+--lv
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1551
+ WHERE fieldname='PRETESTDONE'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1588
+ WHERE fieldname='CDMEAS20'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1592
+ WHERE fieldname='INSP04'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1758
+ WHERE fieldname='EXTRA101'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1449
+ WHERE fieldname='MAINTSCHED'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1570
+ WHERE fieldname='CDMEAS2'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1575
+ WHERE fieldname='CDMEAS7'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1572
+ WHERE fieldname='CDMEAS4'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1576
+ WHERE fieldname='CDMEAS8'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1577
+ WHERE fieldname='CDMEAS9'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1539
+ WHERE fieldname='EXTRADATE'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1582
+ WHERE fieldname='CDMEAS14'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1569
+ WHERE fieldname='CDMEAS1'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1574
+ WHERE fieldname='CDMEAS6'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1552
+ WHERE fieldname='PRETESTNOTDONE'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1573
+ WHERE fieldname='CDMEAS5'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1583
+ WHERE fieldname='CDMEAS15'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1578
+ WHERE fieldname='CDMEAS10'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1586
+ WHERE fieldname='CDMEAS18'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1587
+ WHERE fieldname='CDMEAS19'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1596
+ WHERE fieldname='INSP08'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1571
+ WHERE fieldname='CDMEAS3'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1597
+ WHERE fieldname='INSP09'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1589
+ WHERE fieldname='INSP01'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1591
+ WHERE fieldname='INSP03'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1590
+ WHERE fieldname='INSP02'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1593
+ WHERE fieldname='INSP05'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1584
+ WHERE fieldname='CDMEAS16'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1595
+ WHERE fieldname='INSP07'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1594
+ WHERE fieldname='INSP06'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1585
+ WHERE fieldname='CDMEAS17'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1579
+ WHERE fieldname='CDMEAS11'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1580
+ WHERE fieldname='CDMEAS12'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1581
+ WHERE fieldname='CDMEAS13'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1450
+ WHERE fieldname='MAINTUNSCHED'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1759
+ WHERE fieldname='EXTRA102'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1757
+ WHERE fieldname='EXTRA100'
+ AND DATATABLE='LINEV' AND QUERYTYPE='SELECT';
+
+--MOV
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1254
+ WHERE fieldname='PRETESTDONE'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1118
+ WHERE fieldname='MAINTSCHED'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1306
+ WHERE fieldname='INSP08'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1307
+ WHERE fieldname='INSP09'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1255
+ WHERE fieldname='PRETESTNOTDONE'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1301
+ WHERE fieldname='INSP03'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1299
+ WHERE fieldname='INSP01'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1303
+ WHERE fieldname='INSP05'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1302
+ WHERE fieldname='INSP04'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1304
+ WHERE fieldname='INSP06'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1119
+ WHERE fieldname='MAINTUNSCHED'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1300
+ WHERE fieldname='INSP02'
+ AND DATATABLE='MOV' AND QUERYTYPE='SELECT';
+
+ --RV
+ update GRIDDEFAULTFIELD@to_rds 
+set fieldnum=954
+where fieldname = 'AR_SPRINGNUMBER' AND DATATABLE='RELIEFD' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1008
+ WHERE fieldname='FAPRETPRESSDROP' AND DATATABLE='RELIEFD' AND QUERYTYPE='SELECT';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1005
+ WHERE fieldname='RESEAT1';
+
+update GRIDDEFAULTFIELD@to_rds  
+ set fieldnum = 1024
+ WHERE fieldname='TVFINPRESTIGHTAT' AND DATATABLE='RELIEFD' AND QUERYTYPE='SELECT';

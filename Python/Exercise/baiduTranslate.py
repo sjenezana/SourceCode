@@ -16,13 +16,13 @@ secretKey = 'lWzwUiWmhRORknf68FCT'
 fromLang = 'en' # 源语言
 toLang = 'zh'   # 翻译后的语言
 srcFilename = 'c:\_Work\chinesetranslation.xlsx'
-srcColumn=3
-srcRowBegin=121
-srcRowEnd=207
-srcSheet = 'Sheet1'
+srcColumn=2
+srcRowBegin=1
+srcRowEnd=28
+srcSheet = 'Sheet2'
 desFilename = 'c:\_Work\chinesetranslation_result.xlsx'
 desColumn=1
-desSheet = 'result'
+desSheet = 'result2'
 
 
 def translateBaidu(content): 

@@ -21,6 +21,11 @@
     font-size: 1.1em;
 }
 
+#12 myclass {
+    color: limegreen;
+    font-size: 1.1em;
+}
+
 span.important {
     color: darkred;
 }
