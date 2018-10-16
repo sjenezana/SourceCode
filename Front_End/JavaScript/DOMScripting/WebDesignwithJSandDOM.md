@@ -324,9 +324,9 @@ Features
     [websocket](https://html.spec.whatwg.org/multipage/web-sockets.html#network)
     [web workers](https://html.spec.whatwg.org/multipage/workers.html#workers)
     [drag and drop](https://html.spec.whatwg.org/multipage/dnd.html#dnd)
-[HTML Living Standard](https://html.spec.whatwg.org/)
-[W3C HTML5 Eorking Draft](https://html.spec.whatwg.org/multipage/dnd.html#dnd)
-[Demos](https://developers.google.com/web/)
+    [HTML Living Standard](https://html.spec.whatwg.org/)
+    [W3C HTML5 Eorking Draft](https://html.spec.whatwg.org/multipage/dnd.html#dnd)
+    [Demos](https://developers.google.com/web/)
 
 ##chapter12 example
 
